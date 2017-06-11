@@ -1,4 +1,5 @@
 import * as builder from "botbuilder"
+import { Dialogs } from './Dialogs/Dialogs'
 import { Logger } from './Interceptors/Logger'
 
 export class Bot extends builder.UniversalBot {
@@ -6,17 +7,8 @@ export class Bot extends builder.UniversalBot {
     {
         super(connector, settings);
 
-        this.use({
-            botbuilder: function (session, next) {
-                Logger.log('inbound', session.message.text);
-                next();
-            },
-            send: function(event, next) {
-                if (event.type === 'message') {
-                    Logger.log('outbound', (event as builder.IMessage).text);
-                }
-                next();
-            }
-        })
+        Dialogs.initialize();
+
+        this.use(new Logger());
     }
 }
