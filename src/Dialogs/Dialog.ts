@@ -14,6 +14,10 @@ export abstract class Dialog {
     protected initialize(): void {
         let newActionList = new Array<builder.IDialogWaterfallStep>();
 
+        newActionList.push((session, args, next) => { 
+            this.setDialogIdAsCurrent(session, args, next); 
+        });
+
         newActionList = newActionList.concat(
             (this.getActions() as builder.IDialogWaterfallStep[])
         );
@@ -22,5 +26,13 @@ export abstract class Dialog {
             .triggerAction({
                 matches: this.getMatches(),
             });
+    }
+
+    private async setDialogIdAsCurrent(session: builder.Session, args?: any | builder.IDialogResult<any>, next?: (args?: builder.IDialogResult<any>) => void): Promise<void> {
+        session.conversationData.currentDialogName = this.getDialogId();
+
+        if (next) {
+            next(args);
+        }
     }
 }
