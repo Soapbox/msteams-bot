@@ -1,5 +1,5 @@
 import * as builder from "botbuilder"
-import { Dialogs } from './Dialogs/Dialogs'
+import { Initializer } from './Dialogs/Initializer'
 import { Logger } from './Interceptors/Logger'
 
 export class Bot extends builder.UniversalBot {
@@ -7,7 +7,7 @@ export class Bot extends builder.UniversalBot {
     {
         super(connector, settings);
 
-        Dialogs.initialize();
+        Initializer.initialize(this);
 
         this.use(new Logger());
     }
