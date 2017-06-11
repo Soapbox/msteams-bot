@@ -6,17 +6,35 @@
   "repository": "https://github.com/SoapBox/goodbot",
   "author": "Jaspaul Bola <jaspaul@soapboxhq.com>",
   "license": "proprietary",
-  "dependencies": {},
+  "dependencies": {
+    "botbuilder": "^3.8.4",
+    "restify": "^4.3.0"
+  },
   "devDependencies": {
     "@types/node": "^7.0.29",
     "gulp": "^3.9.1",
     "gulp-typescript": "^3.1.1",
+    "jest": "^20.0.4",
     "nodemon": "^1.11.0",
     "ts-node": "^3.0.6",
+    "tslint": "^5.4.3",
     "typescript": "^2.3.4"
   },
   "scripts": {
-    "start": "npm run build:live",
-    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts"
+    "start": "./node_modules/.bin/tsc && node ./dist/index.js",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
+    "test": "jest",
+    "lint": "./node_modules/.bin/tslint -c tslint.json 'src/**/*.{ts,tsx}'"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/helpers/preprocessor.js"
+    },
+    "testRegex": "/tests/.*\\.(ts|tsx|js)$"
   }
 }

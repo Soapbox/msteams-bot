@@ -1,0 +1,62 @@
+{
+    "$schema": "https://statics.teams.microsoft.com/sdk/v1.0/manifest/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.0",
+    "version": "0.1.0",
+    "id": "a4247db1-dc97-4852-84e5-d1080ff95b8b",
+    "packageName": "com.soapboxhq.goodtalk.bot",
+    "developer": {
+        "name": "SoapBox HQ",
+        "websiteUrl": "https://www.soapboxhq.com",
+        "privacyUrl": "https://www.soapboxhq.com/",
+        "termsOfUseUrl": "https://www.soapboxhq.com/"
+    },
+    "name": {
+        "short": "GoodTalk Bot",
+        "full": "GoodTalk Bot for Microsoft Teams"
+    },
+    "description": {
+        "short": "A Bot.",
+        "full": "A Bot."
+    },
+    "icons": {
+        "outline": "contoso20x20.png",
+        "color": "contoso96x96.png"
+    },
+    "accentColor": "#60A18E",
+    "staticTabs": [],
+    "configurableTabs": [],
+    "bots": [
+        {
+            "botId": "8d06b736-443b-4ac6-aea7-f49f9879fc11",
+            "isNotificationOnly": false,
+            "scopes": [
+                "team",
+                "personal"
+            ],
+            "commandLists": [
+                {
+                    "scopes": [
+                        "team",
+                        "personal"
+                    ],
+                    "commands": [
+                        {
+                            "title": "help",
+                            "description": "Find out what I can do"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connectors": [],
+    "composeExtensions": [],
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": [
+        "teamsnodesample.azurewebsites.net",
+        "*.teamsnodesample.azurewebsites.net"
+    ]
+}
