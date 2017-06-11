@@ -6,17 +6,21 @@ export class Echo extends Dialog {
         return 'Echo';
     }
 
-    getMatches(): string | RegExp | RegExp[] | string[] {
-        return /^echo/i;
+    getMatches(): RegExp[] {
+        return [
+            /^echo/i
+        ];
     }
 
-    getActions(): builder.IDialogWaterfallStep | builder.IDialogWaterfallStep[] {
-        return Echo.message;
+    getActions(): builder.IDialogWaterfallStep[] {
+        return [
+            Echo.handle
+        ];
     }
 
-    private static async message(
+    private static async handle(
         session: builder.Session
     ): Promise<void> {
-        session.send("You said: %s", session.message.text);
+        session.endDialog("You said: %s", session.message.text);
     }
 }

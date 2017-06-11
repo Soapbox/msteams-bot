@@ -3,9 +3,9 @@ import * as builder from 'botbuilder'
 export abstract class Dialog {
     abstract getDialogId(): string;
 
-    abstract getMatches(): RegExp | RegExp[] | string | string[];
+    abstract getMatches(): RegExp[];
 
-    abstract getActions(): builder.IDialogWaterfallStep | builder.IDialogWaterfallStep[];
+    abstract getActions(): builder.IDialogWaterfallStep[];
 
     constructor(protected bot: builder.UniversalBot) {
         this.initialize();
@@ -13,13 +13,10 @@ export abstract class Dialog {
 
     protected initialize(): void {
         let newActionList = new Array<builder.IDialogWaterfallStep>();
-        let actions = this.getActions();
 
-        if (Array.isArray(actions)) {
-            newActionList = newActionList.concat((actions as builder.IDialogWaterfallStep[]));
-        } else {
-            newActionList.push((actions as builder.IDialogWaterfallStep));
-        }
+        newActionList = newActionList.concat(
+            (this.getActions() as builder.IDialogWaterfallStep[])
+        );
 
         this.bot.dialog(this.getDialogId(), newActionList)
             .triggerAction({
