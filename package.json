@@ -1,0 +1,22 @@
+{
+  "name": "goodtalk",
+  "version": "0.1.0",
+  "description": "A goodtalk bot built using the botframework.",
+  "main": "index.js",
+  "repository": "https://github.com/SoapBox/goodbot",
+  "author": "Jaspaul Bola <jaspaul@soapboxhq.com>",
+  "license": "proprietary",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^7.0.29",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.1.1",
+    "nodemon": "^1.11.0",
+    "ts-node": "^3.0.6",
+    "typescript": "^2.3.4"
+  },
+  "scripts": {
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts"
+  }
+}
