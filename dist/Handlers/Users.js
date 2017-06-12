@@ -6,18 +6,17 @@ const Team_1 = require("../Team");
 const teams = require("botbuilder-teams");
 const Logger_1 = require("../Interceptors/Logger");
 class Users {
-    static lookup(address) {
+    static lookup(data) {
+        let address = data.address;
         let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
         Logger_1.Logger.log('Users.lookup', 'Looking up users');
+        console.log(address);
         session.then((session) => {
             let connector = Team_1.Team.getInstance();
             let address = session.message.address;
             let serviceUrl = session.message.address.serviceUrl;
-            Logger_1.Logger.log('Users.lookup.session', 'Inpsecting that session');
             if (serviceUrl && address.conversation && address.conversation.id) {
-                Logger_1.Logger.log('fetchMemberList', 'Fetching the member list');
-                console.log(session.message);
-                connector.fetchMemberList(serviceUrl, session.message.address.conversation.id, teams.TeamsMessage.getTenantId(session.message), (err, result) => {
+                connector.fetchMemberList(serviceUrl, session.message.address.conversation.id, teams.TeamsMessage.getTenantId(data), (err, result) => {
                     if (!err) {
                         let response = "";
                         for (let i = 0; i < result.length; i++) {

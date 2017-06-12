@@ -34,7 +34,7 @@ export class Channels {
         let members = data.membersAdded;
 
         // Get the users
-        Users.lookup(data.address);
+        Users.lookup(data);
 
         // members.forEach((member: any) => {
         //     let message = new builder.Message();

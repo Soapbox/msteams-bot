@@ -20,7 +20,7 @@ class Channels {
         let bot = Bot_1.Bot.getInstance();
         let members = data.membersAdded;
         // Get the users
-        Users_1.Users.lookup(data.address);
+        Users_1.Users.lookup(data);
         // members.forEach((member: any) => {
         //     let message = new builder.Message();
         //     message.address(data.address);
