@@ -16,10 +16,8 @@ export class Default extends Dialog {
         ];
     }
 
-    private static async handle(
-        session: builder.Session
-    ): Promise<void> {
-        session.endDialog("Handled");
+    private static async handle(session: builder.Session): Promise<void> {
+        session.endDialog();
     }
 
     protected initialize(): void {

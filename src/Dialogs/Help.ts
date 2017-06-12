@@ -1,26 +1,24 @@
 import * as builder from 'botbuilder'
 import { Dialog } from './Dialog'
 
-export class Echo extends Dialog {
+export class Help extends Dialog {
     getDialogId(): string {
-        return 'Echo';
+        return 'Help';
     }
 
     getMatches(): RegExp[] {
         return [
-            /^echo/i
+            /^help$/i
         ];
     }
 
     getActions(): builder.IDialogWaterfallStep[] {
         return [
-            Echo.handle
+            Help.handle
         ];
     }
 
-    private static async handle(
-        session: builder.Session
-    ): Promise<void> {
-        session.endDialog("You said: %s", session.message.text);
+    private static async handle(session: builder.Session): Promise<void> {
+        session.endDialog("Need help?");
     }
 }
