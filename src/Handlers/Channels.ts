@@ -1,4 +1,5 @@
 import * as builder from 'botbuilder'
+import * as teams from 'botbuilder-teams'
 var sprintf = require('sprintf-js').sprintf;
 import { Bot } from '../Bot'
 import { Users } from './Users'
@@ -34,7 +35,15 @@ export class Channels {
         let members = data.membersAdded;
 
         // Get the users
-        Users.lookup(data);
+        let usersList = Users.list(data);
+
+        usersList.then((accounts: teams.ChannelAccount[]) => {
+            accounts.forEach((account: teams.ChannelAccount) => {
+                console.log(account);
+            });
+        }).catch((error: any) => {
+            console.log('oops!');
+        });
 
         // members.forEach((member: any) => {
         //     let message = new builder.Message();

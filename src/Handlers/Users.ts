@@ -6,41 +6,34 @@ import * as teams from 'botbuilder-teams'
 import { Logger } from '../Interceptors/Logger'
 
 export class Users {
-    public static lookup(data: any) {
+    public static list(data: any): Promise<teams.ChannelAccount[]> {
         let address = data.address;
         let session = Sessions.load(Bot.getInstance(), address);
 
-        Logger.log('Users.lookup', 'Looking up users');
-        console.log(address);
+        return new Promise<teams.ChannelAccount[]>((resolve, reject) => {
+            session.then((session: builder.Session) => {
+                let connector: teams.TeamsChatConnector = Team.getInstance();
+                let address: builder.IChatConnectorAddress = session.message.address;
+                let serviceUrl = 
+                    (<builder.IChatConnectorAddress>session.message.address).serviceUrl;
 
-        session.then((session: builder.Session) => {
-            let connector: teams.TeamsChatConnector = Team.getInstance();
-            let address: builder.IChatConnectorAddress = session.message.address;
-            let serviceUrl = 
-                (<builder.IChatConnectorAddress>session.message.address).serviceUrl;
-
-            if (serviceUrl && address.conversation && address.conversation.id) {
-                connector.fetchMemberList(
-                    serviceUrl,
-                    session.message.address.conversation.id,
-                    teams.TeamsMessage.getTenantId(data),
-                    (err: Error, result: teams.ChannelAccount[]) => {
-                        if (!err) {
-                            let response = "";
-                            for (let i = 0; i < result.length; i++) {
-                                console.log(result[i]);
-                                response += result[i].givenName + " " + result[i].surname + "<br>";
+                if (serviceUrl && address.conversation && address.conversation.id) {
+                    connector.fetchMemberList(
+                        serviceUrl,
+                        session.message.address.conversation.id,
+                        teams.TeamsMessage.getTenantId(data),
+                        (err: Error, result: teams.ChannelAccount[]) => {
+                            if (!err) {
+                                resolve(result);
+                            } else {
+                                reject(err);
                             }
-                            session.send(response);
-                        } else {
-                            session.error(err);
                         }
-                        session.endDialog();
-                    }
-                );
-            }
-        }).catch((reason: any) => {
-            console.log("Could not get users");
+                    );
+                }
+            }).catch((reason: any) => {
+                reject(reason);
+            });
         });
     }
 }
