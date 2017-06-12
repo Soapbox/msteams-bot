@@ -1,6 +1,7 @@
 var restify = require('restify');
 var builder = require('botbuilder');
 import { Bot } from './Bot'
+import { Team } from './Team'
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -19,3 +20,4 @@ var connector = new builder.ChatConnector({
 server.post('/api/messages', connector.listen());
 
 Bot.initialize(connector, {});
+Team.initialize(connector);

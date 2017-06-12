@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var restify = require('restify');
 var builder = require('botbuilder');
 const Bot_1 = require("./Bot");
+const Team_1 = require("./Team");
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
@@ -16,3 +17,4 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users 
 server.post('/api/messages', connector.listen());
 Bot_1.Bot.initialize(connector, {});
+Team_1.Team.initialize(connector);
