@@ -6,6 +6,9 @@
   "repository": "https://github.com/SoapBox/goodbot",
   "author": "Jaspaul Bola <jaspaul@soapboxhq.com>",
   "license": "proprietary",
+  "engines":{
+    "node": "8.1.0"
+  },
   "dependencies": {
     "botbuilder": "^3.8.4",
     "restify": "^4.3.0",
