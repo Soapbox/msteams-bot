@@ -3,14 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Sessions_1 = require("../Utilities/Sessions");
 const Bot_1 = require("../Bot");
 const teams = require("botbuilder-teams");
+const Logger_1 = require("../Interceptors/Logger");
 class Users {
     static lookup(address) {
         let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
+        Logger_1.Logger.log('Users.lookup', 'Looking up users');
         session.then((session) => {
             let connector = new teams.TeamsChatConnector(session.connector);
             let address = session.message.address;
             let serviceUrl = address.serviceUrl;
+            Logger_1.Logger.log('Users.lookup.session', 'Inpsecting that session');
             if (serviceUrl && address.conversation && address.conversation.id) {
+                Logger_1.Logger.log('fetchMemberList', 'Fetching the member list');
                 connector.fetchMemberList(serviceUrl, address.conversation.id, teams.TeamsMessage.getTenantId(session.message), (err, result) => {
                     if (!err) {
                         let response = "";

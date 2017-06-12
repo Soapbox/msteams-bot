@@ -2,18 +2,22 @@ import * as builder from 'botbuilder'
 import { Sessions } from '../Utilities/Sessions'
 import { Bot } from '../Bot'
 import * as teams from 'botbuilder-teams'
+import { Logger } from '../Interceptors/Logger'
 
 export class Users {
     public static lookup(address: builder.IAddress) {
         let session = Sessions.load(Bot.getInstance(), address);
+        Logger.log('Users.lookup', 'Looking up users');
 
         session.then((session: builder.Session) => {
             let connector: teams.TeamsChatConnector = 
                 new teams.TeamsChatConnector(session.connector);
             let address: builder.IChatConnectorAddress = session.message.address;
             let serviceUrl = address.serviceUrl;
+            Logger.log('Users.lookup.session', 'Inpsecting that session');
 
             if (serviceUrl && address.conversation && address.conversation.id) {
+                Logger.log('fetchMemberList', 'Fetching the member list');
                 connector.fetchMemberList(
                     serviceUrl,
                     address.conversation.id,
