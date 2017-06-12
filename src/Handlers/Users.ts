@@ -28,9 +28,9 @@ export class Users {
                         if (!err) {
                             let response = "";
                             for (let i = 0; i < result.length; i++) {
+                                console.log(result[i]);
                                 response += result[i].givenName + " " + result[i].surname + "<br>";
                             }
-                            console.log(response);
                             session.send(response);
                         } else {
                             session.error(err);
