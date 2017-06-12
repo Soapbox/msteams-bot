@@ -5,7 +5,17 @@ import { Logger } from './Interceptors/Logger'
 import { StripBotAtMentions } from './Interceptors/StripBotAtMentions'
 
 export class Bot extends builder.UniversalBot {
-    constructor(connector: builder.ChatConnector, settings: any)
+    static bot: builder.UniversalBot;
+
+    public static initialize(connector: builder.ChatConnector, settings: any): void {
+        Bot.bot = new Bot(connector, settings);
+    }
+
+    public static getInstance(): builder.UniversalBot {
+        return Bot.bot;
+    }
+
+    private constructor(connector: builder.ChatConnector, settings: any)
     {
         super(connector, settings);
 
