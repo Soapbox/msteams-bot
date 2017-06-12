@@ -6,6 +6,12 @@ const Initializer_2 = require("./Actions/Initializer");
 const Logger_1 = require("./Interceptors/Logger");
 const StripBotAtMentions_1 = require("./Interceptors/StripBotAtMentions");
 class Bot extends builder.UniversalBot {
+    static initialize(connector, settings) {
+        Bot.bot = new Bot(connector, settings);
+    }
+    static getInstance() {
+        return Bot.bot;
+    }
     constructor(connector, settings) {
         super(connector, settings);
         Initializer_1.Initializer.initialize(this);

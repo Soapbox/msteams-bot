@@ -2,21 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const builder = require("botbuilder");
 var sprintf = require('sprintf-js').sprintf;
+const Bot_1 = require("../Bot");
+const Users_1 = require("./Users");
 class Channels {
-    static create(bot, data) {
-        if (bot instanceof builder.UniversalBot) {
-            let start = new builder.Message();
-            start.address(data.address);
-            start.text(sprintf(Channels.START_CREATE, data.user.name));
-            bot.send(start);
-            // Make some api calls here.
-            let end = new builder.Message();
-            end.address(data.address);
-            end.text(sprintf(Channels.DONE_CREATE, data.user.name));
-            bot.send(end);
-        }
+    static create(data) {
+        let bot = Bot_1.Bot.getInstance();
+        let start = new builder.Message();
+        start.address(data.address);
+        start.text(sprintf(Channels.START_CREATE, data.user.name));
+        bot.send(start);
+        // Make some api calls here.
+        Users_1.Users.lookup(data.address);
+        let end = new builder.Message();
+        end.address(data.address);
+        end.text(sprintf(Channels.DONE_CREATE, data.user.name));
+        bot.send(end);
     }
-    static addMembers(bot, data) {
+    static addMembers(data) {
+        let bot = Bot_1.Bot.getInstance();
         let members = data.membersAdded;
         members.forEach((member) => {
             let message = new builder.Message();

@@ -15,4 +15,4 @@ var connector = new builder.ChatConnector({
 });
 // Listen for messages from users 
 server.post('/api/messages', connector.listen());
-new Bot_1.Bot(connector, {});
+Bot_1.Bot.initialize(connector, {});
