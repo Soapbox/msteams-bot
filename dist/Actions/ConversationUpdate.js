@@ -9,8 +9,10 @@ class ConversationUpdate extends Action_1.Action {
     }
     listener(data) {
         console.log(data);
-        Logger_1.Logger.log('members-added', 'Adding members to channels.');
-        Channels_1.Channels.addMembers(data);
+        if (data.membersAdded) {
+            Logger_1.Logger.log('members-added', 'Adding members to channels.');
+            Channels_1.Channels.addMembers(data);
+        }
     }
 }
 exports.ConversationUpdate = ConversationUpdate;

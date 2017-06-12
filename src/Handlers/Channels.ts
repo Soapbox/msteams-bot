@@ -20,9 +20,6 @@ export class Channels {
 
         bot.send(start);
 
-        // Make some api calls here.
-        Users.lookup(data.address);
-
         let end = new builder.Message();
 
         end.address(data.address);
@@ -36,15 +33,18 @@ export class Channels {
         let bot = Bot.getInstance();
         let members = data.membersAdded;
 
-        members.forEach((member: any) => {
-            let message = new builder.Message();
+        // Get the users
+        Users.lookup(data.address);
 
-            message.address(data.address);
-            message.text(sprintf(Channels.ADDED, member.name));
+        // members.forEach((member: any) => {
+        //     let message = new builder.Message();
 
-            bot.send(message);
+        //     message.address(data.address);
+        //     message.text(sprintf(Channels.ADDED, member.name));
 
-            // Make an api call here
-        });
+        //     bot.send(message);
+
+        //     // Make an api call here
+        // });
     }
 }

@@ -11,8 +11,6 @@ class Channels {
         start.address(data.address);
         start.text(sprintf(Channels.START_CREATE, data.user.name));
         bot.send(start);
-        // Make some api calls here.
-        Users_1.Users.lookup(data.address);
         let end = new builder.Message();
         end.address(data.address);
         end.text(sprintf(Channels.DONE_CREATE, data.user.name));
@@ -21,13 +19,15 @@ class Channels {
     static addMembers(data) {
         let bot = Bot_1.Bot.getInstance();
         let members = data.membersAdded;
-        members.forEach((member) => {
-            let message = new builder.Message();
-            message.address(data.address);
-            message.text(sprintf(Channels.ADDED, member.name));
-            bot.send(message);
-            // Make an api call here
-        });
+        // Get the users
+        Users_1.Users.lookup(data.address);
+        // members.forEach((member: any) => {
+        //     let message = new builder.Message();
+        //     message.address(data.address);
+        //     message.text(sprintf(Channels.ADDED, member.name));
+        //     bot.send(message);
+        //     // Make an api call here
+        // });
     }
 }
 Channels.START_CREATE = "Hello! @%s has invited me here to set up your GoodTalk " +
