@@ -1,5 +1,7 @@
 import * as builder from 'botbuilder'
 var sprintf = require('sprintf-js').sprintf;
+import { Bot } from '../Bot'
+import { Users } from './Users'
 
 export class Channels {
     public static START_CREATE = "Hello! @%s has invited me here to set up your GoodTalk " +
@@ -9,27 +11,29 @@ export class Channels {
         "`@goodtalk add [Your discussion item]`";
     public static ADDED = "Hello! @%s has been added!";
 
-    public static create(bot: any, data: any): void {
-        if (bot instanceof builder.UniversalBot) {
-            let start = new builder.Message();
+    public static create(data: any): void {
+        let bot = Bot.getInstance();
+        let start = new builder.Message();
 
-            start.address(data.address);
-            start.text(sprintf(Channels.START_CREATE, data.user.name));
+        start.address(data.address);
+        start.text(sprintf(Channels.START_CREATE, data.user.name));
 
-            bot.send(start);
+        bot.send(start);
 
-            // Make some api calls here.
+        // Make some api calls here.
+        Users.lookup(data.address);
 
-            let end = new builder.Message();
+        let end = new builder.Message();
 
-            end.address(data.address);
-            end.text(sprintf(Channels.DONE_CREATE, data.user.name));
+        end.address(data.address);
+        end.text(sprintf(Channels.DONE_CREATE, data.user.name));
 
-            bot.send(end);
-        }
+        bot.send(end);
+
     }
 
-    public static addMembers(bot: any, data: any): void {
+    public static addMembers(data: any): void {
+        let bot = Bot.getInstance();
         let members = data.membersAdded;
 
         members.forEach((member: any) => {

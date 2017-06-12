@@ -14,7 +14,7 @@ export class ContactRelationUpdate extends Action {
 
         if (action === 'add') {
             Logger.log('bot-added', 'Creating a channel for the team.');
-            Channels.create(this, data);
+            Channels.create(data);
         }
     }
 }
