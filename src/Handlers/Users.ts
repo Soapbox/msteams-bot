@@ -20,7 +20,7 @@ export class Users {
             if (serviceUrl && address.conversation && address.conversation.id) {
                 Logger.log('fetchMemberList', 'Fetching the member list');
 
-                console.log(connector);
+                console.log(session.message);
                 connector.fetchMemberList(
                     serviceUrl,
                     session.message.address.conversation.id,

@@ -8,8 +8,6 @@ const StripBotAtMentions_1 = require("./Interceptors/StripBotAtMentions");
 class Bot extends builder.UniversalBot {
     static initialize(connector, settings) {
         Bot.bot = new Bot(connector, settings);
-        console.log('BOT _ INIT');
-        console.log(connector);
     }
     static getInstance() {
         return Bot.bot;

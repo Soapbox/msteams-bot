@@ -9,8 +9,6 @@ export class Bot extends builder.UniversalBot {
 
     public static initialize(connector: builder.ChatConnector, settings: any): void {
         Bot.bot = new Bot(connector, settings);
-        console.log('BOT _ INIT');
-        console.log(connector);
     }
 
     public static getInstance(): builder.UniversalBot {
