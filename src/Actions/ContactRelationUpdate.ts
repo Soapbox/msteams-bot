@@ -9,6 +9,7 @@ export class ContactRelationUpdate extends Action {
     }
 
     listener(data: any): void {
+        console.log(data);
         let action = data.action;
 
         if (action === 'add') {

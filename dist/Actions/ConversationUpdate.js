@@ -8,6 +8,7 @@ class ConversationUpdate extends Action_1.Action {
         return 'conversationUpdate';
     }
     listener(data) {
+        console.log(data);
         Logger_1.Logger.log('members-added', 'Adding members to channels.');
         Channels_1.Channels.addMembers(this, data);
     }

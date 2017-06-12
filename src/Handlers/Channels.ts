@@ -10,8 +10,6 @@ export class Channels {
     public static ADDED = "Hello! @%s has been added!";
 
     public static create(bot: any, data: any): void {
-        console.log(data);
-
         if (bot instanceof builder.UniversalBot) {
             let start = new builder.Message();
 
@@ -32,8 +30,6 @@ export class Channels {
     }
 
     public static addMembers(bot: any, data: any): void {
-        console.log(data);
-        
         let members = data.membersAdded;
 
         members.forEach((member: any) => {

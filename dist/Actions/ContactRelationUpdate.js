@@ -8,6 +8,7 @@ class ContactRelationUpdate extends Action_1.Action {
         return 'contactRelationUpdate';
     }
     listener(data) {
+        console.log(data);
         let action = data.action;
         if (action === 'add') {
             Logger_1.Logger.log('bot-added', 'Creating a channel for the team.');

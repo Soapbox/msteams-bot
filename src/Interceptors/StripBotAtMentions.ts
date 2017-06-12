@@ -12,7 +12,10 @@ export class StripBotAtMentions implements builder.IMiddlewareMap {
             if (botAtMention) {
                 // Save original text as property of the message
                 (message as any).textWithBotMentions = message.text;
-                message.text = message.text.replace(botAtMention.text, "").trim();
+
+                if (message.text) {
+                    message.text = message.text.replace(botAtMention.text, "").trim();
+                }
             }
         }
         next();

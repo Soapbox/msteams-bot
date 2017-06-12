@@ -9,6 +9,7 @@ export class ConversationUpdate extends Action {
     }
 
     listener(data: any): void {
+        console.log(data);
         Logger.log('members-added', 'Adding members to channels.');
         Channels.addMembers(this, data);
     }
