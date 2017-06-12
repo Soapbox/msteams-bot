@@ -16,6 +16,7 @@ class Users {
             Logger_1.Logger.log('Users.lookup.session', 'Inpsecting that session');
             if (serviceUrl && address.conversation && address.conversation.id) {
                 Logger_1.Logger.log('fetchMemberList', 'Fetching the member list');
+                console.log(connector);
                 connector.fetchMemberList(serviceUrl, address.conversation.id, teams.TeamsMessage.getTenantId(session.message), (err, result) => {
                     if (!err) {
                         let response = "";

@@ -6,6 +6,8 @@ export class Team extends teams.TeamsChatConnector {
 
     public static initialize(connector: builder.IChatConnectorSettings): void {
         Team.instance = new teams.TeamsChatConnector(connector);
+        console.log('TEAM _ INIT');
+        console.log(connector);
     }
 
     public static getInstance(): teams.TeamsChatConnector {

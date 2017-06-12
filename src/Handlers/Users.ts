@@ -18,6 +18,8 @@ export class Users {
 
             if (serviceUrl && address.conversation && address.conversation.id) {
                 Logger.log('fetchMemberList', 'Fetching the member list');
+
+                console.log(connector);
                 connector.fetchMemberList(
                     serviceUrl,
                     address.conversation.id,
