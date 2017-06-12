@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var restify = require('restify');
 var builder = require('botbuilder');
+const teams = require("botbuilder-teams");
 const Bot_1 = require("./Bot");
 const Team_1 = require("./Team");
 // Setup Restify Server
@@ -10,11 +11,15 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 // Create chat connector for communicating with the Bot Framework Service
-var connector = new builder.ChatConnector({
+var botConnector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 // Listen for messages from users 
-server.post('/api/messages', connector.listen());
-Bot_1.Bot.initialize(connector, {});
-Team_1.Team.initialize(connector);
+server.post('/api/messages', botConnector.listen());
+Bot_1.Bot.initialize(botConnector, {});
+var chatConnector = new teams.TeamsChatConnector({
+    appId: process.env.MICROSOFT_APP_ID,
+    appPassword: process.env.MICROSOFT_APP_PASSWORD
+});
+Team_1.Team.initialize(chatConnector);

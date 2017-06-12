@@ -13,7 +13,8 @@ export class Users {
         session.then((session: builder.Session) => {
             let connector: teams.TeamsChatConnector = Team.getInstance();
             let address: builder.IChatConnectorAddress = session.message.address;
-            let serviceUrl = address.serviceUrl;
+            let serviceUrl = 
+                (<builder.IChatConnectorAddress>session.message.address).serviceUrl;
             Logger.log('Users.lookup.session', 'Inpsecting that session');
 
             if (serviceUrl && address.conversation && address.conversation.id) {
@@ -22,7 +23,7 @@ export class Users {
                 console.log(connector);
                 connector.fetchMemberList(
                     serviceUrl,
-                    address.conversation.id,
+                    session.message.address.conversation.id,
                     teams.TeamsMessage.getTenantId(session.message),
                     (err: Error, result: teams.ChannelAccount[]) => {
                         if (!err) {

@@ -12,12 +12,12 @@ class Users {
         session.then((session) => {
             let connector = Team_1.Team.getInstance();
             let address = session.message.address;
-            let serviceUrl = address.serviceUrl;
+            let serviceUrl = session.message.address.serviceUrl;
             Logger_1.Logger.log('Users.lookup.session', 'Inpsecting that session');
             if (serviceUrl && address.conversation && address.conversation.id) {
                 Logger_1.Logger.log('fetchMemberList', 'Fetching the member list');
                 console.log(connector);
-                connector.fetchMemberList(serviceUrl, address.conversation.id, teams.TeamsMessage.getTenantId(session.message), (err, result) => {
+                connector.fetchMemberList(serviceUrl, session.message.address.conversation.id, teams.TeamsMessage.getTenantId(session.message), (err, result) => {
                     if (!err) {
                         let response = "";
                         for (let i = 0; i < result.length; i++) {

@@ -3,9 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const teams = require("botbuilder-teams");
 class Team extends teams.TeamsChatConnector {
     static initialize(connector) {
-        Team.instance = new teams.TeamsChatConnector(connector);
-        console.log('TEAM _ INIT');
-        console.log(connector);
+        Team.instance = connector;
     }
     static getInstance() {
         return Team.instance;

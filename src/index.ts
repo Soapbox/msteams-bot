@@ -1,5 +1,6 @@
 var restify = require('restify');
 var builder = require('botbuilder');
+import * as teams from 'botbuilder-teams'
 import { Bot } from './Bot'
 import { Team } from './Team'
 
@@ -11,13 +12,19 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 });
 
 // Create chat connector for communicating with the Bot Framework Service
-var connector = new builder.ChatConnector({
+var botConnector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
 // Listen for messages from users 
-server.post('/api/messages', connector.listen());
+server.post('/api/messages', botConnector.listen());
 
-Bot.initialize(connector, {});
-Team.initialize(connector);
+Bot.initialize(botConnector, {});
+
+var chatConnector = new teams.TeamsChatConnector({
+    appId: process.env.MICROSOFT_APP_ID,
+    appPassword: process.env.MICROSOFT_APP_PASSWORD
+});
+
+Team.initialize(chatConnector);
