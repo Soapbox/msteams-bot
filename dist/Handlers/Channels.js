@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const builder = require("botbuilder");
 var sprintf = require('sprintf-js').sprintf;
 const Bot_1 = require("../Bot");
-const Users_1 = require("./Users");
+const Accounts_1 = require("./Accounts");
+const Logger_1 = require("../Interceptors/Logger");
 class Channels {
     static create(data) {
         let bot = Bot_1.Bot.getInstance();
@@ -17,24 +18,17 @@ class Channels {
         bot.send(end);
     }
     static addMembers(data) {
-        let bot = Bot_1.Bot.getInstance();
+        Logger_1.Logger.log('Channels.addMembers', 'Adding members to the channel.');
+        console.log(data);
         let members = data.membersAdded;
-        // Get the users
-        let usersList = Users_1.Users.list(data);
-        usersList.then((accounts) => {
+        let listUsers = Accounts_1.Accounts.list(data);
+        listUsers.then((accounts) => {
             accounts.forEach((account) => {
                 console.log(account);
             });
         }).catch((error) => {
             console.log('oops!');
         });
-        // members.forEach((member: any) => {
-        //     let message = new builder.Message();
-        //     message.address(data.address);
-        //     message.text(sprintf(Channels.ADDED, member.name));
-        //     bot.send(message);
-        //     // Make an api call here
-        // });
     }
 }
 Channels.START_CREATE = "Hello! @%s has invited me here to set up your GoodTalk " +

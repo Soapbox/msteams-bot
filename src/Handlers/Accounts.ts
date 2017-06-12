@@ -3,9 +3,8 @@ import { Sessions } from '../Utilities/Sessions'
 import { Bot } from '../Bot'
 import { Team } from '../Team'
 import * as teams from 'botbuilder-teams'
-import { Logger } from '../Interceptors/Logger'
 
-export class Users {
+export class Accounts {
     public static list(data: any): Promise<teams.ChannelAccount[]> {
         let address = data.address;
         let session = Sessions.load(Bot.getInstance(), address);

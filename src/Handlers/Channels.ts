@@ -2,7 +2,8 @@ import * as builder from 'botbuilder'
 import * as teams from 'botbuilder-teams'
 var sprintf = require('sprintf-js').sprintf;
 import { Bot } from '../Bot'
-import { Users } from './Users'
+import { Accounts } from './Accounts'
+import { Logger } from '../Interceptors/Logger'
 
 export class Channels {
     public static START_CREATE = "Hello! @%s has invited me here to set up your GoodTalk " +
@@ -27,33 +28,22 @@ export class Channels {
         end.text(sprintf(Channels.DONE_CREATE, data.user.name));
 
         bot.send(end);
-
     }
 
     public static addMembers(data: any): void {
-        let bot = Bot.getInstance();
+        Logger.log('Channels.addMembers', 'Adding members to the channel.');
+        console.log(data);
+
         let members = data.membersAdded;
 
-        // Get the users
-        let usersList = Users.list(data);
+        let listUsers = Accounts.list(data);
 
-        usersList.then((accounts: teams.ChannelAccount[]) => {
+        listUsers.then((accounts: teams.ChannelAccount[]) => {
             accounts.forEach((account: teams.ChannelAccount) => {
                 console.log(account);
             });
         }).catch((error: any) => {
             console.log('oops!');
         });
-
-        // members.forEach((member: any) => {
-        //     let message = new builder.Message();
-
-        //     message.address(data.address);
-        //     message.text(sprintf(Channels.ADDED, member.name));
-
-        //     bot.send(message);
-
-        //     // Make an api call here
-        // });
     }
 }
