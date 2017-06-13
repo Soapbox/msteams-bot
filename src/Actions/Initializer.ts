@@ -1,9 +1,9 @@
-import * as builder from 'botbuilder'
-import { ConversationUpdate } from './ConversationUpdate'
 import { ContactRelationUpdate } from './ContactRelationUpdate'
+import { ConversationUpdate } from './ConversationUpdate'
+import { UniversalBot } from 'botbuilder'
 
 export class Initializer {
-    static initialize(bot: builder.UniversalBot): void {
+    static initialize(bot: UniversalBot): void {
         new ConversationUpdate(bot);
         new ContactRelationUpdate(bot);
     }

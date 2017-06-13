@@ -1,5 +1,5 @@
-var sprintf = require('sprintf-js').sprintf;
 import { Configurations } from './Configurations'
+import { sprintf } from 'sprintf-js'
 
 export class Logger {
     public static debug(tag: string, message: string | undefined): void {

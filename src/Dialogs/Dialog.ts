@@ -1,25 +1,25 @@
-import * as builder from 'botbuilder'
+import { IDialogResult, IDialogWaterfallStep, Session, UniversalBot } from 'botbuilder'
 
 export abstract class Dialog {
     abstract getDialogId(): string;
 
     abstract getMatches(): RegExp[];
 
-    abstract getActions(): builder.IDialogWaterfallStep[];
+    abstract getActions(): IDialogWaterfallStep[];
 
-    constructor(protected bot: builder.UniversalBot) {
+    constructor(protected bot: UniversalBot) {
         this.initialize();
     }
 
     protected initialize(): void {
-        let newActionList = new Array<builder.IDialogWaterfallStep>();
+        let newActionList = new Array<IDialogWaterfallStep>();
 
         newActionList.push((session, args, next) => { 
             this.setDialogIdAsCurrent(session, args, next); 
         });
 
         newActionList = newActionList.concat(
-            (this.getActions() as builder.IDialogWaterfallStep[])
+            (this.getActions() as IDialogWaterfallStep[])
         );
 
         this.bot.dialog(this.getDialogId(), newActionList)
@@ -28,7 +28,7 @@ export abstract class Dialog {
             });
     }
 
-    private async setDialogIdAsCurrent(session: builder.Session, args?: any | builder.IDialogResult<any>, next?: (args?: builder.IDialogResult<any>) => void): Promise<void> {
+    private async setDialogIdAsCurrent(session: Session, args?: any | IDialogResult<any>, next?: (args?: IDialogResult<any>) => void): Promise<void> {
         session.conversationData.currentDialogName = this.getDialogId();
 
         if (next) {

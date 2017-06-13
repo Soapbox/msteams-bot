@@ -1,4 +1,4 @@
-import * as builder from 'botbuilder'
+import { IDialogWaterfallStep, Session } from 'botbuilder'
 import { Dialog } from './Dialog'
 
 export class Help extends Dialog {
@@ -12,13 +12,13 @@ export class Help extends Dialog {
         ];
     }
 
-    getActions(): builder.IDialogWaterfallStep[] {
+    getActions(): IDialogWaterfallStep[] {
         return [
             Help.handle
         ];
     }
 
-    private static async handle(session: builder.Session): Promise<void> {
+    private static async handle(session: Session): Promise<void> {
         session.endDialog("Need help?");
     }
 }

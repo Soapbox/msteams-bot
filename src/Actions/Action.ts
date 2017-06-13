@@ -1,11 +1,11 @@
-import * as builder from 'botbuilder'
+import { UniversalBot } from 'botbuilder'
 
 export abstract class Action {
     abstract getAction(): string;
 
     abstract listener(data: any): void;
 
-    constructor(protected bot: builder.UniversalBot) {
+    constructor(protected bot: UniversalBot) {
         this.initialize();
     }
 

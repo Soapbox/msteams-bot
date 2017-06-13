@@ -1,4 +1,4 @@
-import * as builder from 'botbuilder'
+import { IDialogWaterfallStep, Session } from 'botbuilder'
 import { Dialog } from './Dialog'
 
 export class Default extends Dialog {
@@ -10,21 +10,21 @@ export class Default extends Dialog {
         return [];
     }
 
-    getActions(): builder.IDialogWaterfallStep[] {
+    getActions(): IDialogWaterfallStep[] {
         return [
             Default.handle
         ];
     }
 
-    private static async handle(session: builder.Session): Promise<void> {
+    private static async handle(session: Session): Promise<void> {
         session.endDialog();
     }
 
     protected initialize(): void {
-        let newActionList = new Array<builder.IDialogWaterfallStep>();
+        let newActionList = new Array<IDialogWaterfallStep>();
 
         newActionList = newActionList.concat(
-            (this.getActions() as builder.IDialogWaterfallStep[])
+            (this.getActions() as IDialogWaterfallStep[])
         );
 
         this.bot.dialog(this.getDialogId(), newActionList);

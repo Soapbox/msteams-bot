@@ -1,21 +1,21 @@
-import * as builder from "botbuilder"
 import { Initializer as DialogInitializer } from './Dialogs/Initializer'
 import { Initializer as ActionInitializer } from './Actions/Initializer'
-import { Logger } from './Interceptors/Logger'
 import { StripBotAtMentions } from './Interceptors/StripBotAtMentions'
+import { ChatConnector, UniversalBot } from "botbuilder"
+import { Logger } from './Interceptors/Logger'
 
-export class Bot extends builder.UniversalBot {
-    static bot: builder.UniversalBot;
+export class Bot extends UniversalBot {
+    static bot: UniversalBot;
 
-    public static initialize(connector: builder.ChatConnector, settings: any): void {
+    public static initialize(connector: ChatConnector, settings: any): void {
         Bot.bot = new Bot(connector, settings);
     }
 
-    public static getInstance(): builder.UniversalBot {
+    public static getInstance(): UniversalBot {
         return Bot.bot;
     }
 
-    private constructor(connector: builder.ChatConnector, settings: any)
+    private constructor(connector: ChatConnector, settings: any)
     {
         super(connector, settings);
 

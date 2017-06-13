@@ -1,8 +1,8 @@
+import { TeamsChatConnector } from 'botbuilder-teams'
+import { ChatConnector } from 'botbuilder'
 var restify = require('restify');
-var builder = require('botbuilder');
-import * as teams from 'botbuilder-teams'
-import { Bot } from './Bot'
 import { Team } from './Team'
+import { Bot } from './Bot'
 
 var server = restify.createServer();
 
@@ -11,7 +11,7 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 });
 
 // Create chat connector for communicating with the Bot Framework Service
-var botConnector = new builder.ChatConnector({
+var botConnector = new ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
@@ -21,7 +21,7 @@ server.post('/api/messages', botConnector.listen());
 
 Bot.initialize(botConnector, {});
 
-var chatConnector = new teams.TeamsChatConnector({
+var chatConnector = new TeamsChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });

@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const builder = require("botbuilder");
 const Initializer_1 = require("./Dialogs/Initializer");
 const Initializer_2 = require("./Actions/Initializer");
-const Logger_1 = require("./Interceptors/Logger");
 const StripBotAtMentions_1 = require("./Interceptors/StripBotAtMentions");
-class Bot extends builder.UniversalBot {
+const botbuilder_1 = require("botbuilder");
+const Logger_1 = require("./Interceptors/Logger");
+class Bot extends botbuilder_1.UniversalBot {
     static initialize(connector, settings) {
         Bot.bot = new Bot(connector, settings);
     }

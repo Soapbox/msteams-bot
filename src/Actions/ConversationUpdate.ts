@@ -1,7 +1,7 @@
+import { CreateChannel } from '../Flows/CreateChannel'
+import { IConversationUpdate } from 'botbuilder'
+import { Logger } from '../Utilities/Logger'
 import { Action } from './Action'
-import { Logger } from '../Interceptors/Logger'
-import { Channels } from '../Handlers/Channels'
-import * as builder from 'botbuilder'
 
 export class ConversationUpdate extends Action {
     getAction(): string {
@@ -13,7 +13,8 @@ export class ConversationUpdate extends Action {
         
         if (data.membersAdded) {
             Logger.log('members-added', 'Adding members to channels.');
-            Channels.addMembers((<builder.IConversationUpdate> data));
+            (new CreateChannel((<IConversationUpdate> data)))
+                .handle();
         }
     }
 }

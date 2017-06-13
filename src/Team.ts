@@ -1,18 +1,17 @@
-import * as teams from "botbuilder-teams"
-import * as builder from 'botbuilder'
+import { TeamsChatConnector } from "botbuilder-teams"
 
-export class Team extends teams.TeamsChatConnector {
-    static instance: teams.TeamsChatConnector;
+export class Team extends TeamsChatConnector {
+    static instance: TeamsChatConnector;
 
-    public static initialize(connector: teams.TeamsChatConnector): void {
+    public static initialize(connector: TeamsChatConnector): void {
         Team.instance = connector;
     }
 
-    public static getInstance(): teams.TeamsChatConnector {
+    public static getInstance(): TeamsChatConnector {
         return Team.instance;
     }
 
-    private constructor(connector: teams.TeamsChatConnector)
+    private constructor(connector: TeamsChatConnector)
     {
         super(connector);
     }

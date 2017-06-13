@@ -1,7 +1,5 @@
+import { Logger } from '../Utilities/Logger'
 import { Action } from './Action'
-import { Logger } from '../Interceptors/Logger'
-import { Channels } from '../Handlers/Channels'
-import * as builder from 'botbuilder'
 
 export class ContactRelationUpdate extends Action {
     getAction(): string {
@@ -14,7 +12,6 @@ export class ContactRelationUpdate extends Action {
 
         if (action === 'add') {
             Logger.log('bot-added', 'Creating a channel for the team.');
-            Channels.create(data);
         }
     }
 }

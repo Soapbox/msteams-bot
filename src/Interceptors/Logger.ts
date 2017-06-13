@@ -1,15 +1,14 @@
-import * as builder from 'botbuilder'
-var sprintf = require('sprintf-js').sprintf;
+import { IEvent, IMessage, IMiddlewareMap, Session } from 'botbuilder'
 import { Logger as ConsoleLogger } from '../Utilities/Logger'
 
-export class Logger implements builder.IMiddlewareMap {
-    public readonly botbuilder = (session: builder.Session, next: Function): void => {
+export class Logger implements IMiddlewareMap {
+    public readonly botbuilder = (session: Session, next: Function): void => {
         ConsoleLogger.debug('inbound', session.message.text);
         next();
     }
 
-    public readonly send = (event: builder.IEvent, next: Function): void => {
-        ConsoleLogger.debug('outbound', (event as builder.IMessage).text);
+    public readonly send = (event: IEvent, next: Function): void => {
+        ConsoleLogger.debug('outbound', (event as IMessage).text);
         next();
     }
 }
