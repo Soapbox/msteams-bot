@@ -5,7 +5,7 @@ const Logger_1 = require("../Utilities/Logger");
 const Team_1 = require("../Team");
 const Bot_1 = require("../Bot");
 class Channels {
-    static list(data) {
+    static list(teamId, data) {
         let address = data.address;
         let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
         return new Promise((resolve, reject) => {
@@ -13,10 +13,6 @@ class Channels {
                 let connector = Team_1.Team.getInstance();
                 let address = session.message.address;
                 let serviceUrl = session.message.address.serviceUrl;
-                Logger_1.Logger.debug('wat', '======');
-                console.log(session.message);
-                Logger_1.Logger.debug('wat', '======');
-                let teamId = session.message.sourceEvent.team.id;
                 connector.fetchChannelList(serviceUrl, teamId, (err, result) => {
                     if (!err) {
                         resolve(result);

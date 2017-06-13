@@ -6,7 +6,7 @@ import { Team } from '../Team'
 import { Bot } from '../Bot'
 
 export class Channels {
-    public static list(data: IConversationUpdate): Promise<ChannelInfo[]> {
+    public static list(teamId: string, data: IConversationUpdate): Promise<ChannelInfo[]> {
         let address = data.address;
         let session = Sessions.load(Bot.getInstance(), address);
 
@@ -15,12 +15,6 @@ export class Channels {
                 let connector: TeamsChatConnector = Team.getInstance();
                 let address: IChatConnectorAddress = session.message.address;
                 let serviceUrl = (<IChatConnectorAddress>session.message.address).serviceUrl;
-                
-                Logger.debug('wat', '======');
-                console.log(session.message);
-                Logger.debug('wat', '======');
-
-                let teamId = session.message.sourceEvent.team.id;
 
                 connector.fetchChannelList(
                     serviceUrl,

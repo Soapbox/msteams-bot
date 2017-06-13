@@ -54,7 +54,7 @@ export class CreateChannel implements Flow {
     }
 
     private getMicrosoftChannel(channelId: string, data: IConversationUpdate): Promise<ChannelInfo> {
-        let channelsList = MicrosoftChannels.list(data);
+        let channelsList = MicrosoftChannels.list(data.sourceEvent.team.id, data);
 
         return new Promise<ChannelInfo>((resolve, reject) => {
             channelsList.then((channels: ChannelInfo[]) => {
@@ -120,7 +120,6 @@ export class CreateChannel implements Flow {
         self.getMicrosoftUser(self.userId, self.data)
             .then((user: ChannelAccount) => {
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
-                console.log(user);
                 return new Promise<any>((resolve, reject) => {
                     self.getMicrosoftChannel(self.channelId, self.data).then((channel: ChannelInfo) => {
                         resolve({user, channel});

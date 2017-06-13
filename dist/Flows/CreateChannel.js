@@ -42,7 +42,7 @@ class CreateChannel {
         Bot_1.Bot.getInstance().send(message);
     }
     getMicrosoftChannel(channelId, data) {
-        let channelsList = Channels_1.Channels.list(data);
+        let channelsList = Channels_1.Channels.list(data.sourceEvent.team.id, data);
         return new Promise((resolve, reject) => {
             channelsList.then((channels) => {
                 channels.forEach((channel) => {
@@ -96,7 +96,6 @@ class CreateChannel {
         self.getMicrosoftUser(self.userId, self.data)
             .then((user) => {
             Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
-            console.log(user);
             return new Promise((resolve, reject) => {
                 self.getMicrosoftChannel(self.channelId, self.data).then((channel) => {
                     resolve({ user, channel });
