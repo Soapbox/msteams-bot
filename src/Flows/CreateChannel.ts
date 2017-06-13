@@ -119,6 +119,7 @@ export class CreateChannel implements Flow {
         this.getMicrosoftUser(this.userId)
             .then((user: ChannelAccount) => {
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
+                console.log(user);
                 return new Promise<any>((resolve, reject) => {
                     self.getMicrosoftChannel(self.channelId).then((channel: ChannelInfo) => {
                         resolve({user, channel});
@@ -129,11 +130,14 @@ export class CreateChannel implements Flow {
             }).then((result: any) => {
                 self.greetNotificationMicrosoftChannel(result.user, result.channel);
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft channel.');
+                console.log(result);
                 return self.createGoodTalkChannel(result.channel);
             }).then((channel: Channel) => {
                 Logger.log('flows.createChannel.handle', 'Created the channel on GoodTalk.');
+                console.log(channel);
                 return self.addUsers(channel);
             }).then((channel: Channel) => {
+                console.log(channel);
                 self.doneNotificationMicrosoftChannel();
             }).catch((error: Error) => {
                 Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
