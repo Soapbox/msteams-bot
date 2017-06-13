@@ -98,8 +98,10 @@ class CreateChannel {
             Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
             return new Promise((resolve, reject) => {
                 self.getMicrosoftChannel(self.channelId, self.data).then((channel) => {
+                    console.log(user, channel);
                     resolve({ user, channel });
                 }).catch((error) => {
+                    console.log(error);
                     reject(error);
                 });
             });
