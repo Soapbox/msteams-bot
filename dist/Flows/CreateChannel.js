@@ -20,15 +20,15 @@ class CreateChannel {
         return new Promise((resolve, reject) => {
             usersList.then((accounts) => {
                 accounts.forEach((account) => {
-                    if (account.id === userId) {
+                    if (account.id == userId) {
                         resolve(account);
                         return;
                     }
                 });
-                Logger_1.Logger.debug('events.createChannel.getMicrosoftUser', 'Could not find the requested microsoft user.');
+                Logger_1.Logger.debug('flows.createChannel.getMicrosoftUser', 'Could not find the requested microsoft user.');
                 reject(new Error('Could not find requested microsoft user.'));
             }).catch((error) => {
-                Logger_1.Logger.debug('events.createChannel.getMicrosoftUser', 'Could not list microsoft users.');
+                Logger_1.Logger.debug('flows.createChannel.getMicrosoftUser', 'Could not list microsoft users.');
                 reject(error);
             });
         });
@@ -45,15 +45,15 @@ class CreateChannel {
         return new Promise((resolve, reject) => {
             channelsList.then((channels) => {
                 channels.forEach((channel) => {
-                    if (channel.id === channelId) {
+                    if (channel.id == channelId) {
                         resolve(channel);
                         return;
                     }
                 });
-                Logger_1.Logger.debug('events.createChannel.getMicrosoftChannel', 'Could not find requested microsoft channel.');
+                Logger_1.Logger.debug('flows.createChannel.getMicrosoftChannel', 'Could not find requested microsoft channel.');
                 reject(new Error('Could not find requested microsoft channel.'));
             }).catch((error) => {
-                Logger_1.Logger.debug('events.createChannel.getMicrosoftChannel', 'Could not list microsoft channels.');
+                Logger_1.Logger.debug('flows.createChannel.getMicrosoftChannel', 'Could not list microsoft channels.');
                 reject(error);
             });
         });
@@ -64,7 +64,7 @@ class CreateChannel {
             result.then((channel) => {
                 resolve(channel);
             }).catch((error) => {
-                Logger_1.Logger.debug('events.createChannel.createGoodTalkChannel', 'Could not create channel on GoodTalk.');
+                Logger_1.Logger.debug('flows.createChannel.createGoodTalkChannel', 'Could not create channel on GoodTalk.');
                 reject(error);
             });
         });
@@ -78,7 +78,7 @@ class CreateChannel {
                 });
                 resolve(channel);
             }).catch((error) => {
-                Logger_1.Logger.debug('events.createChannel.addUsers', 'Could not list microsoft accounts.');
+                Logger_1.Logger.debug('flows.createChannel.addUsers', 'Could not list microsoft accounts.');
                 reject(error);
             });
         });
@@ -94,7 +94,7 @@ class CreateChannel {
         let self = this;
         this.getMicrosoftUser(this.userId)
             .then((user) => {
-            Logger_1.Logger.log('events.createChannel.handle', 'Found the Microsoft user.');
+            Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
             return new Promise((resolve, reject) => {
                 self.getMicrosoftChannel(self.channelId).then((channel) => {
                     resolve({ user, channel });
@@ -104,15 +104,15 @@ class CreateChannel {
             });
         }).then((result) => {
             self.greetNotificationMicrosoftChannel(result.user, result.channel);
-            Logger_1.Logger.log('events.createChannel.handle', 'Found the Microsoft channel.');
+            Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft channel.');
             return self.createGoodTalkChannel(result.channel);
         }).then((channel) => {
-            Logger_1.Logger.log('events.createChannel.handle', 'Created the channel on GoodTalk.');
+            Logger_1.Logger.log('flows.createChannel.handle', 'Created the channel on GoodTalk.');
             return self.addUsers(channel);
         }).then((channel) => {
             self.doneNotificationMicrosoftChannel();
         }).catch((error) => {
-            Logger_1.Logger.debug('events.channelCreated.handle', 'Could not handle create channel.');
+            Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
         });
     }
 }
