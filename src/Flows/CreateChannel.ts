@@ -58,6 +58,7 @@ export class CreateChannel implements Flow {
 
         return new Promise<ChannelInfo>((resolve, reject) => {
             channelsList.then((channels: ChannelInfo[]) => {
+                console.log(channels);
                 channels.forEach((channel: ChannelInfo) => {
                     if (channel.id == channelId) {
                         resolve(channel);

@@ -45,6 +45,7 @@ class CreateChannel {
         let channelsList = Channels_1.Channels.list(data.sourceEvent.team.id, data);
         return new Promise((resolve, reject) => {
             channelsList.then((channels) => {
+                console.log(channels);
                 channels.forEach((channel) => {
                     if (channel.id == channelId) {
                         resolve(channel);
