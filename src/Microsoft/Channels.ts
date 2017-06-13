@@ -31,6 +31,7 @@ export class Channels {
                 );
             }).catch((error: Error) => {
                 Logger.debug('microsoft.channels.list', 'Could not load session');
+                console.log(error);
                 reject(error);
             });
         });

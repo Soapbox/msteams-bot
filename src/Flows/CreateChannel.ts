@@ -29,6 +29,7 @@ export class CreateChannel implements Flow {
                         return;
                     }
                 });
+                // This line gets hit, I'm not sure why.
                 Logger.debug('flows.createChannel.getMicrosoftUser', 'Could not find the requested microsoft user.');
                 reject(new Error('Could not find requested microsoft user.'));
             }).catch((error: Error) => {

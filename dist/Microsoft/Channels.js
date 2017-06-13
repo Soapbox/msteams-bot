@@ -25,6 +25,7 @@ class Channels {
                 });
             }).catch((error) => {
                 Logger_1.Logger.debug('microsoft.channels.list', 'Could not load session');
+                console.log(error);
                 reject(error);
             });
         });
