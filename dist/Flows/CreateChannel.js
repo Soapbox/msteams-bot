@@ -34,19 +34,17 @@ class CreateChannel {
             });
         });
     }
-    greetNotificationMicrosoftChannel(user, channel) {
+    greetNotificationMicrosoftChannel(user, data) {
         let message = new botbuilder_1.Message();
         message.address(this.data.address);
-        message.text(sprintf_js_1.sprintf("Hello #%s!! @%s has invited me here to set up your GoodTalk team! 😁 \n" +
-            "I'll let you know when everything is ready.", channel.name, user.givenName));
+        message.text(sprintf_js_1.sprintf("Hello @%s!! @%s has invited me here to set up your GoodTalk team! 😁 \n" +
+            "I'll let you know when everything is ready.", data.sourceEvent.team.name, user.givenName));
         Bot_1.Bot.getInstance().send(message);
     }
     getMicrosoftChannel(channelId, data) {
         let channelsList = Channels_1.Channels.list(data.sourceEvent.team.id, data);
         return new Promise((resolve, reject) => {
             channelsList.then((channels) => {
-                console.log(channelId);
-                console.log(channels);
                 channels.forEach((channel) => {
                     if (channel.id == channelId) {
                         resolve(channel);
@@ -76,6 +74,7 @@ class CreateChannel {
         let usersList = Accounts_1.Accounts.list(this.data);
         return new Promise((resolve, reject) => {
             usersList.then((accounts) => {
+                console.log(accounts);
                 accounts.forEach((account) => {
                     // Add the user on GoodTalk, and add it to our channel.
                 });
@@ -98,20 +97,11 @@ class CreateChannel {
         self.getMicrosoftUser(self.userId, self.data)
             .then((user) => {
             Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
-            return new Promise((resolve, reject) => {
-                self.getMicrosoftChannel(self.channelId, self.data).then((channel) => {
-                    console.log(user, channel);
-                    resolve({ user, channel });
-                }).catch((error) => {
-                    console.log(error);
-                    reject(error);
-                });
-            });
-        }).then((result) => {
-            self.greetNotificationMicrosoftChannel(result.user, result.channel);
+            self.greetNotificationMicrosoftChannel(user, self.data);
+            return self.getMicrosoftChannel(self.channelId, self.data);
+        }).then((channel) => {
             Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft channel.');
-            console.log(result);
-            return self.createGoodTalkChannel(result.channel);
+            return self.createGoodTalkChannel(channel);
         }).then((channel) => {
             Logger_1.Logger.log('flows.createChannel.handle', 'Created the channel on GoodTalk.');
             console.log(channel);
