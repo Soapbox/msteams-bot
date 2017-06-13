@@ -49,7 +49,7 @@ export class Channels {
         });
     }
 
-    public static list(data: builder.IConversationUpdate): Promise<teams.ChannelInfo> {
+    public static list(data: builder.IConversationUpdate): Promise<teams.ChannelInfo[]> {
         let address = data.address;
         let session = Sessions.load(Bot.getInstance(), address);
 
@@ -57,18 +57,16 @@ export class Channels {
             session.then((session: builder.Session) => {
                 let connector: teams.TeamsChatConnector = Team.getInstance();
                 let address: builder.IChatConnectorAddress = session.message.address;
-                let serviceUrl = 
-                    (<builder.IChatConnectorAddress>session.message.address).serviceUrl;
+                let serviceUrl = (<builder.IChatConnectorAddress>session.message.address).serviceUrl;
                 let teamId = session.message.sourceEvent.team.id;
 
                 connector.fetchChannelList(
                     serviceUrl,
                     teamId,
-                    (err, result) => {
+                    (err: Error, result: teams.ChannelInfo[]) => {
                         if (!err) {
                             resolve(result);
-                        }
-                        else {
+                        } else {
                             reject(err);
                         }
                     }

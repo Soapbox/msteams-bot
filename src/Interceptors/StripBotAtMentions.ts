@@ -2,7 +2,6 @@ import * as builder from "botbuilder";
 
 // Strip bot mentions from the message text
 export class StripBotAtMentions implements builder.IMiddlewareMap {
-
     public readonly botbuilder = (session: builder.Session, next: Function): void => {
         let message = session.message;
         if (message) {
@@ -20,5 +19,4 @@ export class StripBotAtMentions implements builder.IMiddlewareMap {
         }
         next();
     }
-
 }

@@ -4,7 +4,6 @@ import * as teams from 'botbuilder-teams'
 import { Bot } from './Bot'
 import { Team } from './Team'
 
-// Setup Restify Server
 var server = restify.createServer();
 
 server.listen(process.env.port || process.env.PORT || 3978, function () {
