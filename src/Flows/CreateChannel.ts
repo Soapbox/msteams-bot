@@ -18,8 +18,8 @@ export class CreateChannel implements Flow {
         this.userId = data.user.id;
     }
 
-    private getMicrosoftUser(userId: string): Promise<ChannelAccount> {
-        let usersList = MicrosoftAccounts.list(this.data);
+    private getMicrosoftUser(userId: string, data: IConversationUpdate): Promise<ChannelAccount> {
+        let usersList = MicrosoftAccounts.list(data);
 
         return new Promise<ChannelAccount>((resolve, reject) => {
             usersList.then((accounts: ChannelAccount[]) => {
@@ -53,8 +53,8 @@ export class CreateChannel implements Flow {
         Bot.getInstance().send(message);
     }
 
-    private getMicrosoftChannel(channelId: string): Promise<ChannelInfo> {
-        let channelsList = MicrosoftChannels.list(this.data);
+    private getMicrosoftChannel(channelId: string, data: IConversationUpdate): Promise<ChannelInfo> {
+        let channelsList = MicrosoftChannels.list(data);
 
         return new Promise<ChannelInfo>((resolve, reject) => {
             channelsList.then((channels: ChannelInfo[]) => {
@@ -117,12 +117,12 @@ export class CreateChannel implements Flow {
     handle(): void {
         let self: CreateChannel = this;
 
-        this.getMicrosoftUser(this.userId)
+        self.getMicrosoftUser(self.userId, self.data)
             .then((user: ChannelAccount) => {
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
                 console.log(user);
                 return new Promise<any>((resolve, reject) => {
-                    self.getMicrosoftChannel(self.channelId).then((channel: ChannelInfo) => {
+                    self.getMicrosoftChannel(self.channelId, self.data).then((channel: ChannelInfo) => {
                         resolve({user, channel});
                     }).catch((error: Error) => {
                         reject(error);
