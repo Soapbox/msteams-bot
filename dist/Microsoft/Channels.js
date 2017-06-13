@@ -14,7 +14,7 @@ class Channels {
                 let address = session.message.address;
                 let serviceUrl = session.message.address.serviceUrl;
                 Logger_1.Logger.debug('wat', '======');
-                console.log(session);
+                console.log(session.message);
                 Logger_1.Logger.debug('wat', '======');
                 let teamId = session.message.sourceEvent.team.id;
                 connector.fetchChannelList(serviceUrl, teamId, (err, result) => {
