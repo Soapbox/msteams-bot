@@ -17,8 +17,7 @@ export class Channels {
                 let serviceUrl = (<IChatConnectorAddress>session.message.address).serviceUrl;
                 
                 Logger.debug('wat', '======');
-                console.log(session.message.source);
-                console.log(session.message.sourceEvent);
+                console.log(session);
                 Logger.debug('wat', '======');
 
                 let teamId = session.message.sourceEvent.team.id;
