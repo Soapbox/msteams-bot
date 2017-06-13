@@ -13,7 +13,7 @@ export class ConversationUpdate extends Action {
         
         if (data.membersAdded) {
             Logger.log('members-added', 'Adding members to channels.');
-            Channels.addMembers(data);
+            Channels.addMembers((<builder.IConversationUpdate> data));
         }
     }
 }

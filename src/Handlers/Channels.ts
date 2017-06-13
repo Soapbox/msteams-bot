@@ -4,6 +4,8 @@ var sprintf = require('sprintf-js').sprintf;
 import { Bot } from '../Bot'
 import { Accounts } from './Accounts'
 import { Logger } from '../Interceptors/Logger'
+import { Sessions } from '../Utilities/Sessions'
+import { Team } from '../Team'
 
 export class Channels {
     public static START_CREATE = "Hello! @%s has invited me here to set up your GoodTalk " +
@@ -30,7 +32,7 @@ export class Channels {
         bot.send(end);
     }
 
-    public static addMembers(data: any): void {
+    public static addMembers(data: builder.IConversationUpdate): void {
         Logger.log('Channels.addMembers', 'Adding members to the channel.');
         console.log(data);
 
@@ -44,6 +46,36 @@ export class Channels {
             });
         }).catch((error: any) => {
             console.log('oops!');
+        });
+    }
+
+    public static list(data: builder.IConversationUpdate): Promise<teams.ChannelInfo> {
+        let address = data.address;
+        let session = Sessions.load(Bot.getInstance(), address);
+
+        return new Promise<teams.ChannelInfo>((resolve, reject) => {
+            session.then((session: builder.Session) => {
+                let connector: teams.TeamsChatConnector = Team.getInstance();
+                let address: builder.IChatConnectorAddress = session.message.address;
+                let serviceUrl = 
+                    (<builder.IChatConnectorAddress>session.message.address).serviceUrl;
+                let teamId = session.message.sourceEvent.team.id;
+
+                connector.fetchChannelList(
+                    serviceUrl,
+                    teamId,
+                    (err, result) => {
+                        if (!err) {
+                            resolve(result);
+                        }
+                        else {
+                            reject(err);
+                        }
+                    }
+                );
+            }).catch((reason: any) => {
+                reject(reason);
+            });
         });
     }
 }

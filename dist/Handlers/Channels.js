@@ -5,6 +5,8 @@ var sprintf = require('sprintf-js').sprintf;
 const Bot_1 = require("../Bot");
 const Accounts_1 = require("./Accounts");
 const Logger_1 = require("../Interceptors/Logger");
+const Sessions_1 = require("../Utilities/Sessions");
+const Team_1 = require("../Team");
 class Channels {
     static create(data) {
         let bot = Bot_1.Bot.getInstance();
@@ -28,6 +30,28 @@ class Channels {
             });
         }).catch((error) => {
             console.log('oops!');
+        });
+    }
+    static list(data) {
+        let address = data.address;
+        let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
+        return new Promise((resolve, reject) => {
+            session.then((session) => {
+                let connector = Team_1.Team.getInstance();
+                let address = session.message.address;
+                let serviceUrl = session.message.address.serviceUrl;
+                let teamId = session.message.sourceEvent.team.id;
+                connector.fetchChannelList(serviceUrl, teamId, (err, result) => {
+                    if (!err) {
+                        resolve(result);
+                    }
+                    else {
+                        reject(err);
+                    }
+                });
+            }).catch((reason) => {
+                reject(reason);
+            });
         });
     }
 }
