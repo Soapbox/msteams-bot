@@ -14,7 +14,7 @@ export class CreateChannel implements Flow {
     channelId: string = '';
 
     constructor(protected data: IConversationUpdate) {
-        this.channelId = data.address.channelId;
+        this.channelId = data.address.conversation.id;
         this.userId = data.user.id;
     }
 

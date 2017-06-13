@@ -12,7 +12,7 @@ class CreateChannel {
         this.data = data;
         this.userId = '';
         this.channelId = '';
-        this.channelId = data.address.channelId;
+        this.channelId = data.address.conversation.id;
         this.userId = data.user.id;
     }
     getMicrosoftUser(userId, data) {
