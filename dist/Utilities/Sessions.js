@@ -9,6 +9,7 @@ class Sessions {
                 }
                 else {
                     reject(err);
+                    console.log(err);
                 }
             });
         });

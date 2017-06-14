@@ -8,6 +8,7 @@ export class Sessions {
                     resolve(session);
                 } else {
                     reject(err);
+                    console.log(err);
                 }
             });
         });
