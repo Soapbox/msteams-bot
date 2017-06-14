@@ -1,7 +1,7 @@
+import { IChatConnectorAddress, IConversationUpdate, Message, Session } from 'botbuilder'
 import { Service as ChannelsService } from '../GoodTalk/Channels/Service'
 import { Channels as MicrosoftChannels } from '../Microsoft/Channels'
 import { Accounts as MicrosoftAccounts } from '../Microsoft/Accounts'
-import { IConversationUpdate, Message, Session } from 'botbuilder'
 import { ChannelAccount, ChannelInfo } from 'botbuilder-teams'
 import { Channel } from '../GoodTalk/Channels/Channel'
 import { Sessions } from '../Utilities/Sessions'
@@ -39,11 +39,16 @@ export class CreateChannels implements Flow {
     }
 
     private greetUser(user: ChannelAccount, data: IConversationUpdate): void {
-        let address = data.address;
-
-        delete address.conversation;
-        address.user = {
-            id: user.id
+        let address = {
+            channelId: data.address.channelId,
+            user: {
+                id: user.id
+            },
+            bot: {
+                id: data.address.bot.id
+            },
+            serviceUrl: (<IChatConnectorAddress>data.address).serviceUrl,
+            useAuth: true
         }
 
         console.log(address);

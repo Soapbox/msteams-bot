@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const botbuilder_1 = require("botbuilder");
 const Service_1 = require("../GoodTalk/Channels/Service");
 const Channels_1 = require("../Microsoft/Channels");
 const Accounts_1 = require("../Microsoft/Accounts");
-const botbuilder_1 = require("botbuilder");
 const Sessions_1 = require("../Utilities/Sessions");
 const Logger_1 = require("../Utilities/Logger");
 const sprintf_js_1 = require("sprintf-js");
@@ -34,10 +34,16 @@ class CreateChannels {
         });
     }
     greetUser(user, data) {
-        let address = data.address;
-        delete address.conversation;
-        address.user = {
-            id: user.id
+        let address = {
+            channelId: data.address.channelId,
+            user: {
+                id: user.id
+            },
+            bot: {
+                id: data.address.bot.id
+            },
+            serviceUrl: data.address.serviceUrl,
+            useAuth: true
         };
         console.log(address);
         console.log(data.address);
