@@ -37,19 +37,19 @@ class CreateChannels {
         let address = {
             channelId: data.address.channelId,
             user: {
-                id: user.id,
-                name: user.givenName
+                id: user.id
+            },
+            channelData: {
+                tenant: {
+                    id: data.sourceEvent.team.tenant.id
+                }
             },
             bot: {
                 id: data.address.bot.id,
                 name: data.address.bot.name
             },
-            conversation: {
-                id: sprintf_js_1.sprintf('19:%s_%s@unq.gbl.spaces', user.objectId, data.address.bot.id),
-                isGroup: false
-            },
             serviceUrl: data.address.serviceUrl,
-            useAuth: false
+            useAuth: true
         };
         console.log(address);
         console.log(data.address);

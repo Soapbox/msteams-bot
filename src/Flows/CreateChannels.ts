@@ -39,26 +39,22 @@ export class CreateChannels implements Flow {
     }
 
     private greetUser(user: ChannelAccount, data: IConversationUpdate): void {
-        let address = {
+        let address = { 
             channelId: data.address.channelId,
             user: {
-                id: user.id,
-                name: user.givenName
+                id: user.id
             },
-            bot: {
+            channelData: {
+                tenant:{
+                    id: data.sourceEvent.team.tenant.id
+                }
+            },
+            bot: { 
                 id: data.address.bot.id,
-                name: data.address.bot.name
-            },
-            conversation: {
-                id: sprintf(
-                    '19:%s_%s@unq.gbl.spaces',
-                    user.objectId,
-                    data.address.bot.id
-                ),
-                isGroup: false
+                name: data.address.bot.name 
             },
             serviceUrl: (<IChatConnectorAddress>data.address).serviceUrl,
-            useAuth: false
+            useAuth: true
         }
 
         console.log(address);
