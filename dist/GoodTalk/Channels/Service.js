@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
-const Constants_1 = require("../Constants");
 class Service {
     static create(tenantId, actor, channel) {
-        let url = Constants_1.Constants.ROOT_URL + 'channels';
+        //let url = Constants.ROOT_URL + 'channels';
+        let url = 'https://requestb.in/15tdhpb1';
         let name = 'General';
         if (!(channel.name) || channel.name.length === 0) {
             channel.name = name;
