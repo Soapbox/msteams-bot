@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios'
 import { Constants } from '../Constants'
 
 export class Service {
-    public static create(channel: ChannelInfo, actor: ChannelAccount, user: ChannelAccount): Promise<AxiosResponse> {
+    public static create(channel: ChannelInfo, actor: ChannelAccount, user: ChannelAccount, role: string = "employee"): Promise<AxiosResponse> {
         let url = Constants.ROOT_URL + 'users/invite';
 
         return new Promise<AxiosResponse>((resolve, reject) => {
@@ -19,7 +19,8 @@ export class Service {
                 user: {
                     id: user.id,
                     name: user.givenName,
-                    email: user.email
+                    email: user.email,
+                    role: role
                 }
             }).then((response: AxiosResponse) => {
                 resolve(response);
