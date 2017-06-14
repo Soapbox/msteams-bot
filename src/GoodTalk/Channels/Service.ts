@@ -6,6 +6,12 @@ export class Service {
     public static create(tenantId: string, actor: ChannelAccount, channel: ChannelInfo): Promise<AxiosResponse> {
         let url = Constants.ROOT_URL + 'channels';
 
+        let name = 'General';
+
+        if (channel.name.length === 0) {
+            channel.name = name;
+        }
+
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios.post(url, {
                 tenant: {

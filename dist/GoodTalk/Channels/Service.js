@@ -5,6 +5,10 @@ const Constants_1 = require("../Constants");
 class Service {
     static create(tenantId, actor, channel) {
         let url = Constants_1.Constants.ROOT_URL + 'channels';
+        let name = 'General';
+        if (channel.name.length === 0) {
+            channel.name = name;
+        }
         return new Promise((resolve, reject) => {
             axios_1.default.post(url, {
                 tenant: {
