@@ -45,6 +45,9 @@ export class CreateChannels implements Flow {
             bot: data.address.bot
         };
 
+        console.log(data.address);
+        console.log(address);
+
         let session = Sessions.load(Bot.getInstance(), address);
 
         session.then((session: Session) => {
