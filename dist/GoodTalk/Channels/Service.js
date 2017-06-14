@@ -6,7 +6,7 @@ class Service {
     static create(tenantId, actor, channel) {
         let url = Constants_1.Constants.ROOT_URL + 'channels';
         let name = 'General';
-        if (channel.name.length === 0) {
+        if (!(channel.name) || channel.name.length === 0) {
             channel.name = name;
         }
         return new Promise((resolve, reject) => {

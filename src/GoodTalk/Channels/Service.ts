@@ -8,7 +8,7 @@ export class Service {
 
         let name = 'General';
 
-        if (channel.name.length === 0) {
+        if (!(channel.name) || channel.name.length === 0) {
             channel.name = name;
         }
 
