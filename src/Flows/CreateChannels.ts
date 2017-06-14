@@ -52,21 +52,23 @@ export class CreateChannels implements Flow {
             useAuth: true
         }
 
-        console.log(address);
-        console.log(data.address);
+        // console.log(address);
+        // console.log(data.address);
 
-        let session = Sessions.load(Bot.getInstance(), address);
+        // let session = Sessions.load(Bot.getInstance(), address);
 
-        session.then((session: Session) => {
-            session.send(sprintf(
-                "Blurb about running better meetings with GoodTalk"
-            ));
-            session.send(sprintf(
-                "Blurb about setting up things in background and to wait"
-            ));
-        }).catch((error: Error) => {
-            Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
-        });
+        // session.then((session: Session) => {
+        //     session.send(sprintf(
+        //         "Blurb about running better meetings with GoodTalk"
+        //     ));
+        //     session.send(sprintf(
+        //         "Blurb about setting up things in background and to wait"
+        //     ));
+        // }).catch((error: Error) => {
+        //     Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
+        // });
+
+        Bot.getInstance().beginDialog(address, 'GreetUser')
     }
 
     private getMicrosoftChannel(channelId: string, data: IConversationUpdate): Promise<ChannelInfo> {

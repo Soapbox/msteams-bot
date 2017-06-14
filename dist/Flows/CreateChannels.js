@@ -4,9 +4,7 @@ const botbuilder_1 = require("botbuilder");
 const Service_1 = require("../GoodTalk/Channels/Service");
 const Channels_1 = require("../Microsoft/Channels");
 const Accounts_1 = require("../Microsoft/Accounts");
-const Sessions_1 = require("../Utilities/Sessions");
 const Logger_1 = require("../Utilities/Logger");
-const sprintf_js_1 = require("sprintf-js");
 const Bot_1 = require("../Bot");
 class CreateChannels {
     constructor(data) {
@@ -46,15 +44,20 @@ class CreateChannels {
             serviceUrl: data.address.serviceUrl,
             useAuth: true
         };
-        console.log(address);
-        console.log(data.address);
-        let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
-        session.then((session) => {
-            session.send(sprintf_js_1.sprintf("Blurb about running better meetings with GoodTalk"));
-            session.send(sprintf_js_1.sprintf("Blurb about setting up things in background and to wait"));
-        }).catch((error) => {
-            Logger_1.Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
-        });
+        // console.log(address);
+        // console.log(data.address);
+        // let session = Sessions.load(Bot.getInstance(), address);
+        // session.then((session: Session) => {
+        //     session.send(sprintf(
+        //         "Blurb about running better meetings with GoodTalk"
+        //     ));
+        //     session.send(sprintf(
+        //         "Blurb about setting up things in background and to wait"
+        //     ));
+        // }).catch((error: Error) => {
+        //     Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
+        // });
+        Bot_1.Bot.getInstance().beginDialog(address, 'GreetUser');
     }
     getMicrosoftChannel(channelId, data) {
         let channelsList = Channels_1.Channels.list(data.sourceEvent.team.id, data);
