@@ -40,7 +40,8 @@ class CreateChannels {
                 id: user.id
             },
             bot: {
-                id: data.address.bot.id
+                id: data.address.bot.id,
+                name: data.address.bot.name
             },
             serviceUrl: data.address.serviceUrl,
             useAuth: true
