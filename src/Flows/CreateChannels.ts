@@ -173,8 +173,13 @@ export class CreateChannels implements Flow {
             }).then(async (result: any) => {
                 try {
                     result.channels.forEach(async (channel: ChannelInfo) => {
-                        await self.createGoodTalkChannel(self.tenantId, result.user, result.channel);
-                        await self.addUsers(result.user, channel);
+                        await self.createGoodTalkChannel(self.tenantId, result.user, result.channel)
+                            .catch((error: Error) => {
+                                console.log(error);
+                            });
+                        await self.addUsers(result.user, channel).catch((error: Error) => {
+                            console.log(error);
+                        });
                     });
 
                     self.doneNotificationMicrosoftChannel(result.user, self.data);
