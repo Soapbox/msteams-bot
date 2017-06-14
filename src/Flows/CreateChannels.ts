@@ -50,7 +50,11 @@ export class CreateChannels implements Flow {
                 name: data.address.bot.name
             },
             conversation: {
-                id: user.id,
+                id: sprintf(
+                    '19:%s_%s@unq.gbl.spaces',
+                    user.id,
+                    data.address.bot.id
+                ),
                 isGroup: false
             },
             serviceUrl: (<IChatConnectorAddress>data.address).serviceUrl,
