@@ -1,4 +1,4 @@
-import { CreateChannel } from '../Flows/CreateChannel'
+import { CreateChannel } from '../Flows/CreateChannels'
 import { IConversationUpdate } from 'botbuilder'
 import { Sessions } from '../Utilities/Sessions'
 import { Logger } from '../Utilities/Logger'
@@ -17,7 +17,7 @@ export class ConversationUpdate extends Action {
 
         if (botAdded) {
             Logger.log('actions.conversationUpdate.listener', 'Bot added, adding all members to all channels.');
-            (new CreateChannel((<IConversationUpdate> data)))
+            (new CreateChannels((<IConversationUpdate> data)))
                 .handle();
         } else {
             Logger.log('actions.conversationUpdate.listener', 'Detected a conversation update, not sure what to do.');
