@@ -34,15 +34,12 @@ class CreateChannels {
         });
     }
     greetUser(user, data) {
-        let address = {
-            channelId: data.address.channelId,
-            user: {
-                id: user.id
-            },
-            bot: {
-                id: data.address.bot.id
-            }
+        let address = data.address;
+        delete address.conversation;
+        address.user = {
+            id: user.id
         };
+        console.log(address);
         console.log(data.address);
         let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
         session.then((session) => {
