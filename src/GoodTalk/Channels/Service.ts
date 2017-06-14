@@ -10,10 +10,10 @@ export class Service {
         });
     }
 
-    public static create(tenantId: string, actor: ChannelAccount, channel: ChannelInfo): Promise<boolean> {
+    public static create(tenantId: string, actor: ChannelAccount, channel: ChannelInfo): Promise<AxiosResponse> {
         let url = Constants.ROOT_URL;
 
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise<AxiosResponse>((resolve, reject) => {
             axios.post(url, {
                 tenant: {
                     id: tenantId
@@ -28,11 +28,10 @@ export class Service {
                     name: channel.name
                 }
             }).then((response: AxiosResponse) => {
-                resolve(true);
+                resolve(response);
             }).catch((error: Error) => {
-                resolve(false);
+                reject(error);
             });
-            reject(new Error('wat'));
         });
     }
 }

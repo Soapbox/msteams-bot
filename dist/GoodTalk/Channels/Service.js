@@ -26,11 +26,10 @@ class Service {
                     name: channel.name
                 }
             }).then((response) => {
-                resolve(true);
+                resolve(response);
             }).catch((error) => {
-                resolve(false);
+                reject(error);
             });
-            reject(new Error('wat'));
         });
     }
 }

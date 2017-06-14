@@ -80,14 +80,8 @@ class CreateChannels {
     createGoodTalkChannel(tenantId, actor, channel) {
         let result = Service_1.Service.create(tenantId, actor, channel);
         return new Promise((resolve, reject) => {
-            result.then((success) => {
-                if (success) {
-                    resolve(channel);
-                }
-                else {
-                    Logger_1.Logger.debug('flows.createChannel.createGoodTalkChannel', 'Failed at msteams brain api.');
-                    reject(new Error('Failed at msteams brain api.'));
-                }
+            result.then((response) => {
+                resolve(channel);
             }).catch((error) => {
                 Logger_1.Logger.debug('', 'Could not create channel on GoodTalk.');
                 reject(error);

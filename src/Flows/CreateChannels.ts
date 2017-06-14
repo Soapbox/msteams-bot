@@ -6,6 +6,7 @@ import { ChannelAccount, ChannelInfo } from 'botbuilder-teams'
 import { Channel } from '../GoodTalk/Channels/Channel'
 import { Sessions } from '../Utilities/Sessions'
 import { Logger } from '../Utilities/Logger'
+import { AxiosResponse } from 'axios'
 import { sprintf } from 'sprintf-js'
 import { Flow } from './Flow'
 import { Bot } from '../Bot'
@@ -96,13 +97,8 @@ export class CreateChannels implements Flow {
         let result = ChannelsService.create(tenantId, actor, channel);
 
         return new Promise<ChannelInfo>((resolve, reject) => {
-            result.then((success: boolean) => {
-                if (success) {
-                    resolve(channel);
-                } else {
-                    Logger.debug('flows.createChannel.createGoodTalkChannel', 'Failed at msteams brain api.');
-                    reject(new Error('Failed at msteams brain api.'));
-                }
+            result.then((response: AxiosResponse) => {
+                resolve(channel);
             }).catch((error: Error) => {
                 Logger.debug('', 'Could not create channel on GoodTalk.');
                 reject(error);
@@ -193,6 +189,6 @@ export class CreateChannels implements Flow {
                 Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
                 console.log(error);
             });
-            
+
     }
 }
