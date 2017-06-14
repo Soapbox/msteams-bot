@@ -152,11 +152,17 @@ class CreateChannels {
                 });
             });
         }).then((result) => __awaiter(this, void 0, void 0, function* () {
-            result.channels.forEach((channel) => __awaiter(this, void 0, void 0, function* () {
-                yield self.createGoodTalkChannel(self.tenantId, result.user, result.channel);
-                yield self.addUsers(result.user, channel);
-            }));
-            self.doneNotificationMicrosoftChannel(result.user, self.data);
+            try {
+                result.channels.forEach((channel) => __awaiter(this, void 0, void 0, function* () {
+                    yield self.createGoodTalkChannel(self.tenantId, result.user, result.channel);
+                    yield self.addUsers(result.user, channel);
+                }));
+                self.doneNotificationMicrosoftChannel(result.user, self.data);
+            }
+            catch (error) {
+                Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
+                console.log(error);
+            }
         })).catch((error) => {
             Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
             console.log(error);

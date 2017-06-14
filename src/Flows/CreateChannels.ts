@@ -171,12 +171,17 @@ export class CreateChannels implements Flow {
                         });
                 });
             }).then(async (result: any) => {
-                result.channels.forEach(async (channel: ChannelInfo) => {
-                    await self.createGoodTalkChannel(self.tenantId, result.user, result.channel);
-                    await self.addUsers(result.user, channel);
-                });
+                try {
+                    result.channels.forEach(async (channel: ChannelInfo) => {
+                        await self.createGoodTalkChannel(self.tenantId, result.user, result.channel);
+                        await self.addUsers(result.user, channel);
+                    });
 
-                self.doneNotificationMicrosoftChannel(result.user, self.data);
+                    self.doneNotificationMicrosoftChannel(result.user, self.data);
+                } catch (error) {
+                    Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
+                    console.log(error);
+                }
             }).catch((error: Error) => {
                 Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
                 console.log(error);
