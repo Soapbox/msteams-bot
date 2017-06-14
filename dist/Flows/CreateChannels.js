@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Service_1 = require("../GoodTalk/Channels/Service");
 const Channels_1 = require("../Microsoft/Channels");
 const Accounts_1 = require("../Microsoft/Accounts");
+const Service_2 = require("../GoodTalk/Users/Service");
 const Sessions_1 = require("../Utilities/Sessions");
 const Logger_1 = require("../Utilities/Logger");
 const sprintf_js_1 = require("sprintf-js");
@@ -95,6 +96,12 @@ class CreateChannels {
                 console.log(accounts);
                 accounts.forEach((account) => {
                     // Add the user on GoodTalk, and add it to our channel.
+                    let result = Service_2.Service.create(channel, actor, account);
+                    result.then((response) => {
+                        // Do nothing?
+                    }).catch((error) => {
+                        Logger_1.Logger.debug('add-user-failed', 'Could not create channel on GoodTalk.');
+                    });
                 });
                 resolve(actor);
             }).catch((error) => {

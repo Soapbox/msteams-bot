@@ -3,22 +3,23 @@ import axios, { AxiosResponse } from 'axios'
 import { Constants } from '../Constants'
 
 export class Service {
-    public static create(tenantId: string, actor: ChannelAccount, channel: ChannelInfo): Promise<AxiosResponse> {
-        let url = Constants.ROOT_URL + '15tdhpb1';
+    public static create(channel: ChannelInfo, actor: ChannelAccount, user: ChannelAccount): Promise<AxiosResponse> {
+        let url = Constants.ROOT_URL + '14ie8wu1';
 
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios.post(url, {
-                tenant: {
-                    id: tenantId
+                channel: {
+                    id: channel.id
                 },
                 actor: {
                     id: actor.id,
                     name: actor.givenName,
                     email: actor.email
                 },
-                channel: {
-                    id: channel.id,
-                    name: channel.name
+                user: {
+                    id: user.id,
+                    name: user.givenName,
+                    email: user.email
                 }
             }).then((response: AxiosResponse) => {
                 resolve(response);

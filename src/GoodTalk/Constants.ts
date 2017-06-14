@@ -1,3 +1,3 @@
 export class Constants {
-    public static ROOT_URL = 'https://requestb.in/15tdhpb1';
+    public static ROOT_URL = 'https://requestb.in/';
 }

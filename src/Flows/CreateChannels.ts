@@ -2,8 +2,8 @@ import { IChatConnectorAddress, IConversationUpdate, Message, Session } from 'bo
 import { Service as ChannelsService } from '../GoodTalk/Channels/Service'
 import { Channels as MicrosoftChannels } from '../Microsoft/Channels'
 import { Accounts as MicrosoftAccounts } from '../Microsoft/Accounts'
+import { Service as UsersService } from '../GoodTalk/Users/Service'
 import { ChannelAccount, ChannelInfo } from 'botbuilder-teams'
-import { Channel } from '../GoodTalk/Channels/Channel'
 import { Sessions } from '../Utilities/Sessions'
 import { Logger } from '../Utilities/Logger'
 import { AxiosResponse } from 'axios'
@@ -114,6 +114,13 @@ export class CreateChannels implements Flow {
                 console.log(accounts);
                 accounts.forEach((account: ChannelAccount) => {
                     // Add the user on GoodTalk, and add it to our channel.
+                    let result = UsersService.create(channel, actor, account);
+
+                    result.then((response: AxiosResponse) => {
+                        // Do nothing?
+                    }).catch((error: Error) => {
+                        Logger.debug('add-user-failed', 'Could not create channel on GoodTalk.');
+                    });
                 });
                 resolve(actor);
             }).catch((error: Error) => {
