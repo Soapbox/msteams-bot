@@ -10,14 +10,12 @@ export class ConversationUpdate extends Action {
         return 'conversationUpdate';
     }
 
-    private wasTheBotAdded(data: IConversationUpdate): boolean {
-        return data.membersAdded &&
+    listener(data: any): void {
+        let botAdded = data.membersAdded &&
             data.membersAdded[0] &&
             data.membersAdded[0].id == data.address.bot.id;
-    }
 
-    listener(data: any): void {
-        if (this.wasTheBotAdded(data)) {
+        if (botAdded) {
             Logger.log('actions.conversationUpdate.listener', 'Bot added, adding all members to all channels.');
             (new CreateChannel((<IConversationUpdate> data)))
                 .handle();
