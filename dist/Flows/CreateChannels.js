@@ -34,6 +34,7 @@ class CreateChannels {
         });
     }
     greetUser(user, data) {
+        console.log(data);
         let address = {
             channelId: data.address.channelId,
             user: {
