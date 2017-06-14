@@ -52,7 +52,7 @@ export class CreateChannels implements Flow {
             conversation: {
                 id: sprintf(
                     '19:%s_%s@unq.gbl.spaces',
-                    user.id,
+                    user.objectId,
                     data.address.bot.id
                 ),
                 isGroup: false

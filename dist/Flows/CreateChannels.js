@@ -45,7 +45,7 @@ class CreateChannels {
                 name: data.address.bot.name
             },
             conversation: {
-                id: sprintf_js_1.sprintf('19:%s_%s@unq.gbl.spaces', user.id, data.address.bot.id),
+                id: sprintf_js_1.sprintf('19:%s_%s@unq.gbl.spaces', user.objectId, data.address.bot.id),
                 isGroup: false
             },
             serviceUrl: data.address.serviceUrl,
