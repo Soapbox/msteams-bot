@@ -4,7 +4,7 @@ const axios_1 = require("axios");
 const Constants_1 = require("../Constants");
 class Service {
     static create(tenantId, actor, channel) {
-        let url = Constants_1.Constants.ROOT_URL + '15tdhpb1';
+        let url = Constants_1.Constants.ROOT_URL + 'channels';
         return new Promise((resolve, reject) => {
             axios_1.default.post(url, {
                 tenant: {

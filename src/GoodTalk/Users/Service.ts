@@ -4,7 +4,7 @@ import { Constants } from '../Constants'
 
 export class Service {
     public static create(channel: ChannelInfo, actor: ChannelAccount, user: ChannelAccount): Promise<AxiosResponse> {
-        let url = Constants.ROOT_URL + '14ie8wu1';
+        let url = Constants.ROOT_URL + 'users/invite';
 
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios.post(url, {

@@ -1,3 +1,3 @@
 export class Constants {
-    public static ROOT_URL = 'https://requestb.in/';
+    public static ROOT_URL = 'https://dasmsteams.vagrantshare.com/api/';
 }
