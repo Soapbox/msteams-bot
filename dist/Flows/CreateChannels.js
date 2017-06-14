@@ -34,7 +34,6 @@ class CreateChannels {
         });
     }
     greetUser(user, data) {
-        console.log(data);
         let address = {
             channelId: data.address.channelId,
             user: {
@@ -42,7 +41,7 @@ class CreateChannels {
             },
             channelData: {
                 tenant: {
-                    id: data.sourceEvent.team.tenant.id
+                    id: data.sourceEvent.tenant.id
                 }
             },
             bot: {

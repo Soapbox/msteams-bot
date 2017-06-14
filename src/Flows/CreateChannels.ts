@@ -39,7 +39,6 @@ export class CreateChannels implements Flow {
     }
 
     private greetUser(user: ChannelAccount, data: IConversationUpdate): void {
-        console.log(data);
         let address = { 
             channelId: data.address.channelId,
             user: {
@@ -47,7 +46,7 @@ export class CreateChannels implements Flow {
             },
             channelData: {
                 tenant:{
-                    id: data.sourceEvent.team.tenant.id
+                    id: data.sourceEvent.tenant.id
                 }
             },
             bot: { 
