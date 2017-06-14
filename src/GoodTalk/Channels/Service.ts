@@ -28,10 +28,11 @@ export class Service {
                     name: channel.name
                 }
             }).then((response: AxiosResponse) => {
-                return true;
+                resolve(true);
             }).catch((error: Error) => {
-                return false;
+                resolve(false);
             });
+            reject(new Error('wat'));
         });
     }
 }
