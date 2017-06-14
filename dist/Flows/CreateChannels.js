@@ -130,6 +130,7 @@ class CreateChannels {
             self.doneNotificationMicrosoftChannel();
         }).catch((error) => {
             Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
+            console.log(error);
         });
     }
 }

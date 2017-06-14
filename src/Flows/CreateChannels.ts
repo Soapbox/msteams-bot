@@ -155,6 +155,7 @@ export class CreateChannels implements Flow {
                 self.doneNotificationMicrosoftChannel();
             }).catch((error: Error) => {
                 Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
+                console.log(error);
             });
     }
 }
