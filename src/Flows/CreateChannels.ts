@@ -74,18 +74,12 @@ export class CreateChannels implements Flow {
         });
     }
 
-    private getMicrosoftChannel(channelId: string, data: IConversationUpdate): Promise<ChannelInfo> {
+    private getMicrosoftChannels(data: IConversationUpdate): Promise<ChannelInfo[]> {
         let channelsList = MicrosoftChannels.list(data.sourceEvent.team.id, data);
 
-        return new Promise<ChannelInfo>((resolve, reject) => {
+        return new Promise<ChannelInfo[]>((resolve, reject) => {
             channelsList.then((channels: ChannelInfo[]) => {
-                channels.forEach((channel: ChannelInfo) => {
-                    if (channel.id == channelId) {
-                        resolve(channel);
-                        return;
-                    }
-                });
-                reject(new Error('Could not find requested microsoft channel.'));
+                resolve(channels);
             }).catch((error: Error) => {
                 Logger.debug('flows.createChannel.getMicrosoftChannel', 'Could not list microsoft channels.');
                 reject(error);
@@ -103,7 +97,7 @@ export class CreateChannels implements Flow {
                 Logger.debug('', 'Could not create channel on GoodTalk.');
                 reject(error);
             });
-        })
+        });
     }
 
     private addUsers(actor: ChannelAccount, channel: ChannelInfo): Promise<ChannelAccount> {
@@ -169,29 +163,20 @@ export class CreateChannels implements Flow {
                 self.greetUser(user, self.data);
 
                 return new Promise<any>((resolve, reject) => {
-                    self.getMicrosoftChannel(self.channelId, self.data)
-                        .then((channel: ChannelInfo) => {
-                            resolve({user, channel});
+                    self.getMicrosoftChannels(self.data)
+                        .then((channels: ChannelInfo[]) => {
+                            resolve({user, channels});
                         }).catch((error: Error) => {
                             reject(error);
                         });
                 });
-            }).then((result: any) => {
-                Logger.log('flows.createChannel.handle', 'Found the Microsoft channel.');
+            }).then(async (result: any) => {
+                result.channels.forEach(async (channel: ChannelInfo) => {
+                    await self.createGoodTalkChannel(self.tenantId, result.user, result.channel);
+                    await self.addUsers(result.user, channel);
+                });
 
-                return new Promise<any>((resolve, reject) => {
-                    self.createGoodTalkChannel(self.tenantId, result.user, result.channel)
-                        .then((channel: ChannelInfo) => {
-                            resolve({user: result.user, channel});
-                        }).catch((error: Error) => {
-                            reject(error);
-                        });
-                });
-            }).then((result: any) => {
-                Logger.log('flows.createChannel.handle', 'Created the channel on GoodTalk.');
-                return self.addUsers(result.user, result.channel);
-            }).then((user: ChannelAccount) => {
-                self.doneNotificationMicrosoftChannel(user, self.data);
+                self.doneNotificationMicrosoftChannel(result.user, self.data);
             }).catch((error: Error) => {
                 Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
                 console.log(error);

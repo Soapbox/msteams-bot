@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Service_1 = require("../GoodTalk/Channels/Service");
 const Channels_1 = require("../Microsoft/Channels");
@@ -61,17 +69,11 @@ class CreateChannels {
             Logger_1.Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
         });
     }
-    getMicrosoftChannel(channelId, data) {
+    getMicrosoftChannels(data) {
         let channelsList = Channels_1.Channels.list(data.sourceEvent.team.id, data);
         return new Promise((resolve, reject) => {
             channelsList.then((channels) => {
-                channels.forEach((channel) => {
-                    if (channel.id == channelId) {
-                        resolve(channel);
-                        return;
-                    }
-                });
-                reject(new Error('Could not find requested microsoft channel.'));
+                resolve(channels);
             }).catch((error) => {
                 Logger_1.Logger.debug('flows.createChannel.getMicrosoftChannel', 'Could not list microsoft channels.');
                 reject(error);
@@ -142,29 +144,20 @@ class CreateChannels {
             Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
             self.greetUser(user, self.data);
             return new Promise((resolve, reject) => {
-                self.getMicrosoftChannel(self.channelId, self.data)
-                    .then((channel) => {
-                    resolve({ user, channel });
+                self.getMicrosoftChannels(self.data)
+                    .then((channels) => {
+                    resolve({ user, channels });
                 }).catch((error) => {
                     reject(error);
                 });
             });
-        }).then((result) => {
-            Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft channel.');
-            return new Promise((resolve, reject) => {
-                self.createGoodTalkChannel(self.tenantId, result.user, result.channel)
-                    .then((channel) => {
-                    resolve({ user: result.user, channel });
-                }).catch((error) => {
-                    reject(error);
-                });
-            });
-        }).then((result) => {
-            Logger_1.Logger.log('flows.createChannel.handle', 'Created the channel on GoodTalk.');
-            return self.addUsers(result.user, result.channel);
-        }).then((user) => {
-            self.doneNotificationMicrosoftChannel(user, self.data);
-        }).catch((error) => {
+        }).then((result) => __awaiter(this, void 0, void 0, function* () {
+            result.channels.forEach((channel) => __awaiter(this, void 0, void 0, function* () {
+                yield self.createGoodTalkChannel(self.tenantId, result.user, result.channel);
+                yield self.addUsers(result.user, channel);
+            }));
+            self.doneNotificationMicrosoftChannel(result.user, self.data);
+        })).catch((error) => {
             Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
             console.log(error);
         });
