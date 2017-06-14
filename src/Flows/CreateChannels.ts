@@ -40,7 +40,7 @@ export class CreateChannels implements Flow {
 
     private greetUser(user: ChannelAccount, data: IConversationUpdate): void {
         let address = {
-            channelId: data.address.conversation.id,
+            channelId: data.address.channelId,
             user: user,
             bot: data.address.bot
         };
