@@ -36,6 +36,7 @@ class CreateChannels {
     greetUser(user, data) {
         let address = data.address;
         delete address.conversation;
+        console.log(data.address);
         let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
         session.then((session) => {
             session.send(sprintf_js_1.sprintf("Blurb about running better meetings with GoodTalk"));

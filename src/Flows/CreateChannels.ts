@@ -41,7 +41,9 @@ export class CreateChannels implements Flow {
     private greetUser(user: ChannelAccount, data: IConversationUpdate): void {
         let address = data.address;
         delete address.conversation;
-        
+
+        console.log(data.address);
+
         let session = Sessions.load(Bot.getInstance(), address);
 
         session.then((session: Session) => {
