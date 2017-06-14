@@ -193,5 +193,6 @@ export class CreateChannels implements Flow {
                 Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
                 console.log(error);
             });
+            
     }
 }
