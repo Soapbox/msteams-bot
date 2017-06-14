@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const botbuilder_1 = require("botbuilder");
 const Service_1 = require("../GoodTalk/Channels/Service");
 const Channels_1 = require("../Microsoft/Channels");
 const Accounts_1 = require("../Microsoft/Accounts");
@@ -13,8 +12,10 @@ class CreateChannels {
         this.data = data;
         this.userId = '';
         this.channelId = '';
+        this.tenantId = '';
         this.channelId = data.address.conversation.id;
         this.userId = data.user.id;
+        this.tenantId = data.sourceEvent.tenant.id;
     }
     getMicrosoftUser(userId, data) {
         let usersList = Accounts_1.Accounts.list(data);
@@ -76,18 +77,24 @@ class CreateChannels {
             });
         });
     }
-    createGoodTalkChannel(channel) {
-        let result = Service_1.Service.createOrFind(channel);
+    createGoodTalkChannel(tenantId, actor, channel) {
+        let result = Service_1.Service.create(tenantId, actor, channel);
         return new Promise((resolve, reject) => {
-            result.then((channel) => {
-                resolve(channel);
+            result.then((success) => {
+                if (success) {
+                    resolve(channel);
+                }
+                else {
+                    Logger_1.Logger.debug('flows.createChannel.createGoodTalkChannel', 'Failed at msteams brain api.');
+                    reject(new Error('Failed at msteams brain api.'));
+                }
             }).catch((error) => {
-                Logger_1.Logger.debug('flows.createChannel.createGoodTalkChannel', 'Could not create channel on GoodTalk.');
+                Logger_1.Logger.debug('', 'Could not create channel on GoodTalk.');
                 reject(error);
             });
         });
     }
-    addUsers(channel) {
+    addUsers(actor, channel) {
         let usersList = Accounts_1.Accounts.list(this.data);
         return new Promise((resolve, reject) => {
             usersList.then((accounts) => {
@@ -95,19 +102,37 @@ class CreateChannels {
                 accounts.forEach((account) => {
                     // Add the user on GoodTalk, and add it to our channel.
                 });
-                resolve(channel);
+                resolve(actor);
             }).catch((error) => {
                 Logger_1.Logger.debug('flows.createChannel.addUsers', 'Could not list microsoft accounts.');
                 reject(error);
             });
         });
     }
-    doneNotificationMicrosoftChannel() {
-        let message = new botbuilder_1.Message();
-        message.address(this.data.address);
-        message.text("Good news everybody!! Your channel is now set up on GoodTalk. To add a new agenda " +
-            "item, in the channel say: `@goodtalk add [Your discussion item]`");
-        Bot_1.Bot.getInstance().send(message);
+    doneNotificationMicrosoftChannel(user, data) {
+        let address = {
+            channelId: data.address.channelId,
+            user: {
+                id: user.id
+            },
+            channelData: {
+                tenant: {
+                    id: data.sourceEvent.tenant.id
+                }
+            },
+            bot: {
+                id: data.address.bot.id,
+                name: data.address.bot.name
+            },
+            serviceUrl: data.address.serviceUrl,
+            useAuth: true
+        };
+        let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
+        session.then((session) => {
+            session.send(sprintf_js_1.sprintf("Instructions on how to add tab app to team channel."));
+        }).catch((error) => {
+            Logger_1.Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
+        });
     }
     handle() {
         let self = this;
@@ -115,17 +140,29 @@ class CreateChannels {
             .then((user) => {
             Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
             self.greetUser(user, self.data);
-            return self.getMicrosoftChannel(self.channelId, self.data);
-        }).then((channel) => {
+            return new Promise((resolve, reject) => {
+                self.getMicrosoftChannel(self.channelId, self.data)
+                    .then((channel) => {
+                    resolve({ user, channel });
+                }).catch((error) => {
+                    reject(error);
+                });
+            });
+        }).then((result) => {
             Logger_1.Logger.log('flows.createChannel.handle', 'Found the Microsoft channel.');
-            return self.createGoodTalkChannel(channel);
-        }).then((channel) => {
+            return new Promise((resolve, reject) => {
+                self.createGoodTalkChannel(self.tenantId, result.user, result.channel)
+                    .then((channel) => {
+                    resolve({ user: result.user, channel });
+                }).catch((error) => {
+                    reject(error);
+                });
+            });
+        }).then((result) => {
             Logger_1.Logger.log('flows.createChannel.handle', 'Created the channel on GoodTalk.');
-            console.log(channel);
-            return self.addUsers(channel);
-        }).then((channel) => {
-            console.log(channel);
-            self.doneNotificationMicrosoftChannel();
+            return self.addUsers(result.user, result.channel);
+        }).then((user) => {
+            self.doneNotificationMicrosoftChannel(user, self.data);
         }).catch((error) => {
             Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
             console.log(error);

@@ -13,10 +13,12 @@ import { Bot } from '../Bot'
 export class CreateChannels implements Flow {
     userId: string = '';
     channelId: string = '';
+    tenantId: string = '';
 
     constructor(protected data: IConversationUpdate) {
         this.channelId = data.address.conversation.id;
         this.userId = data.user.id;
+        this.tenantId = data.sourceEvent.tenant.id;
     }
 
     private getMicrosoftUser(userId: string, data: IConversationUpdate): Promise<ChannelAccount> {
@@ -90,29 +92,34 @@ export class CreateChannels implements Flow {
         });
     }
 
-    private createGoodTalkChannel(channel: ChannelInfo): Promise<Channel> {
-        let result = ChannelsService.createOrFind(channel);
+    private createGoodTalkChannel(tenantId: string, actor: ChannelAccount, channel: ChannelInfo): Promise<ChannelInfo> {
+        let result = ChannelsService.create(tenantId, actor, channel);
 
-        return new Promise<Channel>((resolve, reject) => {
-            result.then((channel: Channel) => {
-                resolve(channel);
+        return new Promise<ChannelInfo>((resolve, reject) => {
+            result.then((success: boolean) => {
+                if (success) {
+                    resolve(channel);
+                } else {
+                    Logger.debug('flows.createChannel.createGoodTalkChannel', 'Failed at msteams brain api.');
+                    reject(new Error('Failed at msteams brain api.'));
+                }
             }).catch((error: Error) => {
-                Logger.debug('flows.createChannel.createGoodTalkChannel', 'Could not create channel on GoodTalk.');
+                Logger.debug('', 'Could not create channel on GoodTalk.');
                 reject(error);
             });
         })
     }
 
-    private addUsers(channel: Channel): Promise<Channel> {
+    private addUsers(actor: ChannelAccount, channel: ChannelInfo): Promise<ChannelAccount> {
         let usersList = MicrosoftAccounts.list(this.data);
 
-        return new Promise<Channel>((resolve, reject) => {
+        return new Promise<ChannelAccount>((resolve, reject) => {
             usersList.then((accounts: ChannelAccount[]) => {
                 console.log(accounts);
                 accounts.forEach((account: ChannelAccount) => {
                     // Add the user on GoodTalk, and add it to our channel.
                 });
-                resolve(channel);
+                resolve(actor);
             }).catch((error: Error) => {
                 Logger.debug('flows.createChannel.addUsers', 'Could not list microsoft accounts.');
                 reject(error);
@@ -120,16 +127,34 @@ export class CreateChannels implements Flow {
         });
     }
 
-    private doneNotificationMicrosoftChannel(): void {
-        let message = new Message();
+    private doneNotificationMicrosoftChannel(user: ChannelAccount, data: IConversationUpdate): void {
+        let address = { 
+            channelId: data.address.channelId,
+            user: {
+                id: user.id
+            },
+            channelData: {
+                tenant:{
+                    id: data.sourceEvent.tenant.id
+                }
+            },
+            bot: { 
+                id: data.address.bot.id,
+                name: data.address.bot.name 
+            },
+            serviceUrl: (<IChatConnectorAddress>data.address).serviceUrl,
+            useAuth: true
+        }
 
-        message.address(this.data.address);
-        message.text(
-            "Good news everybody!! Your channel is now set up on GoodTalk. To add a new agenda " +
-            "item, in the channel say: `@goodtalk add [Your discussion item]`"
-        );
+        let session = Sessions.load(Bot.getInstance(), address);
 
-        Bot.getInstance().send(message);
+        session.then((session: Session) => {
+            session.send(sprintf(
+                "Instructions on how to add tab app to team channel."
+            ));
+        }).catch((error: Error) => {
+            Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
+        });
     }
 
     handle(): void {
@@ -139,17 +164,31 @@ export class CreateChannels implements Flow {
             .then((user: ChannelAccount) => {
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
                 self.greetUser(user, self.data);
-                return self.getMicrosoftChannel(self.channelId, self.data);
-            }).then((channel: ChannelInfo) => {
+
+                return new Promise<any>((resolve, reject) => {
+                    self.getMicrosoftChannel(self.channelId, self.data)
+                        .then((channel: ChannelInfo) => {
+                            resolve({user, channel});
+                        }).catch((error: Error) => {
+                            reject(error);
+                        });
+                });
+            }).then((result: any) => {
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft channel.');
-                return self.createGoodTalkChannel(channel);
-            }).then((channel: Channel) => {
+
+                return new Promise<any>((resolve, reject) => {
+                    self.createGoodTalkChannel(self.tenantId, result.user, result.channel)
+                        .then((channel: ChannelInfo) => {
+                            resolve({user: result.user, channel});
+                        }).catch((error: Error) => {
+                            reject(error);
+                        });
+                });
+            }).then((result: any) => {
                 Logger.log('flows.createChannel.handle', 'Created the channel on GoodTalk.');
-                console.log(channel);
-                return self.addUsers(channel);
-            }).then((channel: Channel) => {
-                console.log(channel);
-                self.doneNotificationMicrosoftChannel();
+                return self.addUsers(result.user, result.channel);
+            }).then((user: ChannelAccount) => {
+                self.doneNotificationMicrosoftChannel(user, self.data);
             }).catch((error: Error) => {
                 Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
                 console.log(error);
