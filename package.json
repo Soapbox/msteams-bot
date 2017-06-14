@@ -10,6 +10,7 @@
     "node": "8.1.0"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "botbuilder": "^3.8.4",
     "botbuilder-teams": "^0.1.2",
     "restify": "^4.3.0",

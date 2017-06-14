@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const CreateChannel_1 = require("../Flows/CreateChannel");
+const CreateChannels_1 = require("../Flows/CreateChannels");
 const Logger_1 = require("../Utilities/Logger");
 const Action_1 = require("./Action");
 class ConversationUpdate extends Action_1.Action {
@@ -13,7 +13,7 @@ class ConversationUpdate extends Action_1.Action {
             data.membersAdded[0].id == data.address.bot.id;
         if (botAdded) {
             Logger_1.Logger.log('actions.conversationUpdate.listener', 'Bot added, adding all members to all channels.');
-            (new CreateChannel_1.CreateChannel(data))
+            (new CreateChannels_1.CreateChannels(data))
                 .handle();
         }
         else {

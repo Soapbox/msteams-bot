@@ -1,15 +1,16 @@
 import { Service as ChannelsService } from '../GoodTalk/Channels/Service'
 import { Channels as MicrosoftChannels } from '../Microsoft/Channels'
 import { Accounts as MicrosoftAccounts } from '../Microsoft/Accounts'
+import { IConversationUpdate, Message, Session } from 'botbuilder'
 import { ChannelAccount, ChannelInfo } from 'botbuilder-teams'
-import { IConversationUpdate, Message } from 'botbuilder'
 import { Channel } from '../GoodTalk/Channels/Channel'
+import { Sessions } from '../Utilities/Sessions'
 import { Logger } from '../Utilities/Logger'
 import { sprintf } from 'sprintf-js'
 import { Flow } from './Flow'
 import { Bot } from '../Bot'
 
-export class CreateChannel implements Flow {
+export class CreateChannels implements Flow {
     userId: string = '';
     channelId: string = '';
 
@@ -29,8 +30,6 @@ export class CreateChannel implements Flow {
                         return;
                     }
                 });
-                // This line gets hit, I'm not sure why.
-                Logger.debug('flows.createChannel.getMicrosoftUser', 'Could not find the requested microsoft user.');
                 reject(new Error('Could not find requested microsoft user.'));
             }).catch((error: Error) => {
                 Logger.debug('flows.createChannel.getMicrosoftUser', 'Could not list microsoft users.');
@@ -39,18 +38,25 @@ export class CreateChannel implements Flow {
         });
     }
 
-    private greetNotificationMicrosoftChannel(user: ChannelAccount, data: IConversationUpdate): void {
-        let message = new Message();
+    private greetUser(user: ChannelAccount, data: IConversationUpdate): void {
+        let address = {
+            channelId: data.address.conversation.id,
+            user: user,
+            bot: data.address.bot
+        };
 
-        message.address(this.data.address);
-        message.text(sprintf(
-            "Hello @%s!! @%s has invited me here to set up your GoodTalk team! 😁 \n" +
-            "I'll let you know when everything is ready.",
-            data.sourceEvent.team.name,
-            user.givenName
-        ));
+        let session = Sessions.load(Bot.getInstance(), address);
 
-        Bot.getInstance().send(message);
+        session.then((session: Session) => {
+            session.send(sprintf(
+                "Blurb about running better meetings with GoodTalk"
+            ));
+            session.send(sprintf(
+                "Blurb about setting up things in background and to wait"
+            ));
+        }).catch((error: Error) => {
+            Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
+        });
     }
 
     private getMicrosoftChannel(channelId: string, data: IConversationUpdate): Promise<ChannelInfo> {
@@ -64,7 +70,6 @@ export class CreateChannel implements Flow {
                         return;
                     }
                 });
-                Logger.debug('flows.createChannel.getMicrosoftChannel', 'Could not find requested microsoft channel.');
                 reject(new Error('Could not find requested microsoft channel.'));
             }).catch((error: Error) => {
                 Logger.debug('flows.createChannel.getMicrosoftChannel', 'Could not list microsoft channels.');
@@ -116,12 +121,12 @@ export class CreateChannel implements Flow {
     }
 
     handle(): void {
-        let self: CreateChannel = this;
+        let self: CreateChannels = this;
 
         self.getMicrosoftUser(self.userId, self.data)
             .then((user: ChannelAccount) => {
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
-                self.greetNotificationMicrosoftChannel(user, self.data);
+                self.greetUser(user, self.data);
                 return self.getMicrosoftChannel(self.channelId, self.data);
             }).then((channel: ChannelInfo) => {
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft channel.');

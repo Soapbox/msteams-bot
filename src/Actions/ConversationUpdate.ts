@@ -1,4 +1,4 @@
-import { CreateChannel } from '../Flows/CreateChannels'
+import { CreateChannels } from '../Flows/CreateChannels'
 import { IConversationUpdate } from 'botbuilder'
 import { Sessions } from '../Utilities/Sessions'
 import { Logger } from '../Utilities/Logger'
