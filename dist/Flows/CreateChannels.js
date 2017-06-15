@@ -157,13 +157,23 @@ class CreateChannels {
             (function loop() {
                 return __awaiter(this, void 0, void 0, function* () {
                     for (let i = 0; i <= result.channels.length; ++i) {
-                        yield self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
+                        try {
+                            yield self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
+                        }
+                        catch (error) {
+                            console.log(error);
+                        }
                     }
                     console.log('all dem channels added');
                     for (let i = 0; i <= result.channels.length; ++i) {
                         console.log(result.user);
                         console.log(result.channels[i]);
-                        yield self.addUsers(result.user, result.channels[i]);
+                        try {
+                            yield self.addUsers(result.user, result.channels[i]);
+                        }
+                        catch (error) {
+                            console.log(error);
+                        }
                     }
                     self.doneNotificationMicrosoftChannel(result.user, self.data);
                 });
