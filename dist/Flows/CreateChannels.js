@@ -152,22 +152,18 @@ class CreateChannels {
                 });
             });
         }).then((result) => __awaiter(this, void 0, void 0, function* () {
-            try {
-                result.channels.forEach((channel) => __awaiter(this, void 0, void 0, function* () {
-                    yield self.createGoodTalkChannel(self.tenantId, result.user, result.channel)
-                        .catch((error) => {
-                        console.log(error);
-                    });
-                    yield self.addUsers(result.user, channel).catch((error) => {
-                        console.log(error);
-                    });
-                }));
-                self.doneNotificationMicrosoftChannel(result.user, self.data);
+            let asyncArray = [];
+            result.channels.array.forEach((channel) => {
+                asyncArray.push(self.createGoodTalkChannel(self.tenantId, result.user, result.channel));
+                asyncArray.push(self.addUsers(result.user, channel));
+            });
+            let chain = Promise.resolve();
+            for (let func of asyncArray) {
+                chain = chain.then().catch((error) => {
+                    console.log(error);
+                });
             }
-            catch (error) {
-                Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
-                console.log(error);
-            }
+            self.doneNotificationMicrosoftChannel(result.user, self.data);
         })).catch((error) => {
             Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
             console.log(error);
