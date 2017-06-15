@@ -155,14 +155,27 @@ class CreateChannels {
             });
         }).then((result) => __awaiter(this, void 0, void 0, function* () {
             let asyncArray = [];
+            console.log('creating channels');
             result.channels.forEach((channel) => {
                 let t = self.tenantId;
                 let u = result.user;
                 let c = channel;
                 asyncArray.push(self.createGoodTalkChannel(t, u, c));
-                asyncArray.push(self.addUsers(u, c));
             });
             let chain = Promise.resolve();
+            for (let func of asyncArray) {
+                chain = chain.then().catch((error) => {
+                    console.log(error);
+                });
+            }
+            asyncArray = [];
+            console.log('adding users');
+            result.channels.array.forEach((channel) => {
+                let u = result.user;
+                let c = channel;
+                asyncArray.push(self.addUsers(u, c));
+            });
+            chain = Promise.resolve();
             for (let func of asyncArray) {
                 chain = chain.then().catch((error) => {
                     console.log(error);

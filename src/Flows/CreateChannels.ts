@@ -174,6 +174,8 @@ export class CreateChannels implements Flow {
                 });
             }).then(async (result: any) => {
                 let asyncArray = [];
+
+                console.log('creating channels');
                 
                 result.channels.forEach((channel: ChannelInfo) => {
                     let t = self.tenantId;
@@ -181,10 +183,27 @@ export class CreateChannels implements Flow {
                     let c = channel;
                     
                     asyncArray.push(self.createGoodTalkChannel(t, u, c));
-                    asyncArray.push(self.addUsers(u, c));
                 });
 
                 let chain = Promise.resolve();
+
+                for (let func of asyncArray) {
+                    chain = chain.then().catch((error: Error) => {
+                        console.log(error);
+                    });
+                }
+
+                asyncArray = [];
+
+                console.log('adding users');
+
+                result.channels.array.forEach((channel: ChannelInfo) => {
+                    let u = result.user;
+                    let c = channel;
+                    asyncArray.push(self.addUsers(u, c));
+                });
+
+                chain = Promise.resolve();
 
                 for (let func of asyncArray) {
                     chain = chain.then().catch((error: Error) => {
