@@ -4,8 +4,8 @@ import { Constants } from '../Constants'
 
 export class Service {
     public static create(tenantId: string, actor: ChannelAccount, channel: ChannelInfo): Promise<AxiosResponse> {
-        let url = Constants.ROOT_URL + 'channels';
-        //let url = 'http://webhook.site/c5f2b02c-b610-4831-95ee-206ee3f90599';
+        //let url = Constants.ROOT_URL + 'channels';
+        let url = 'http://webhook.site/396f731c-3562-4088-942b-ec65e517f5b1';
 
         let name = 'General';
 

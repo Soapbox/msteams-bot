@@ -1,11 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
-const Constants_1 = require("../Constants");
 class Service {
     static create(tenantId, actor, channel) {
-        let url = Constants_1.Constants.ROOT_URL + 'channels';
-        //let url = 'http://webhook.site/c5f2b02c-b610-4831-95ee-206ee3f90599';
+        //let url = Constants.ROOT_URL + 'channels';
+        let url = 'http://webhook.site/396f731c-3562-4088-942b-ec65e517f5b1';
         let name = 'General';
         if (!(channel.name) || channel.name.length === 0) {
             channel.name = name;

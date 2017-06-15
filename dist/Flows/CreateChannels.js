@@ -147,26 +147,23 @@ class CreateChannels {
             });
         }).then((result) => __awaiter(this, void 0, void 0, function* () {
             let asyncArray = [];
-            console.log('creating channels');
             result.channels.forEach((channel) => {
                 let t = self.tenantId;
                 let u = result.user;
                 let c = channel;
                 asyncArray.push(self.createGoodTalkChannel(t, u, c));
             });
-            console.log('adding users');
-            result.channels.forEach((channel) => {
-                let u = result.user;
-                let c = channel;
-                asyncArray.push(self.addUsers(u, c));
-            });
-            console.log(asyncArray);
             let chain = Promise.resolve();
             for (let func of asyncArray) {
                 chain = chain.then().catch((error) => {
                     console.log(error);
                 });
             }
+            result.channels.forEach((channel) => {
+                let u = result.user;
+                let c = channel;
+                self.addUsers(u, c);
+            });
             self.doneNotificationMicrosoftChannel(result.user, self.data);
         })).catch((error) => {
             Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
