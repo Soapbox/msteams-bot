@@ -175,6 +175,8 @@ export class CreateChannels implements Flow {
             }).then(async (result: any) => {
                 let asyncArray = [];
 
+                console.log(result);
+
                 console.log('creating channels');
                 
                 result.channels.forEach((channel: ChannelInfo) => {

@@ -155,6 +155,7 @@ class CreateChannels {
             });
         }).then((result) => __awaiter(this, void 0, void 0, function* () {
             let asyncArray = [];
+            console.log(result);
             console.log('creating channels');
             result.channels.forEach((channel) => {
                 let t = self.tenantId;
