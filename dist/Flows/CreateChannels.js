@@ -162,20 +162,14 @@ class CreateChannels {
                 let c = channel;
                 asyncArray.push(self.createGoodTalkChannel(t, u, c));
             });
-            let chain = Promise.resolve();
-            for (let func of asyncArray) {
-                chain = chain.then().catch((error) => {
-                    console.log(error);
-                });
-            }
-            asyncArray = [];
             console.log('adding users');
             result.channels.forEach((channel) => {
                 let u = result.user;
                 let c = channel;
                 asyncArray.push(self.addUsers(u, c));
             });
-            chain = Promise.resolve();
+            console.log(asyncArray);
+            let chain = Promise.resolve();
             for (let func of asyncArray) {
                 chain = chain.then().catch((error) => {
                     console.log(error);
