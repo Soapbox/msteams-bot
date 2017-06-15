@@ -166,24 +166,12 @@ export class CreateChannels implements Flow {
                             reject(error);
                         });
                 });
-            }).then(async (result: any) => {
-                let asyncArray = [];
-                
-                result.channels.forEach((channel: ChannelInfo) => {
-                    let t = self.tenantId;
-                    let u = result.user;
-                    let c = channel;
-                    
-                    asyncArray.push(self.createGoodTalkChannel(t, u, c));
-                });
-
-                let chain = Promise.resolve();
-
-                for (let func of asyncArray) {
-                    chain = chain.then().catch((error: Error) => {
-                        console.log(error);
-                    });
-                }
+            }).then((result: any) => {
+                (async function loop() {
+                    for (let i = 0; i <= result.channels.length; ++i) {
+                        await self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
+                    }
+                })();
 
                 result.channels.forEach((channel: ChannelInfo) => {
                     let u = result.user;
