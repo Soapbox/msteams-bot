@@ -104,19 +104,25 @@ export class CreateChannels implements Flow {
         let usersList = MicrosoftAccounts.list(this.data);
 
         usersList.then((accounts: ChannelAccount[]) => {
-            let asyncArray = [];
+            (async function loop() {
+                for (let i = 0; i <= accounts.length; ++i) {
+                    await UsersService.create(channel, actor, accounts[i]);
+                }
+            })();
 
-            accounts.forEach((account: ChannelAccount) => {
-                asyncArray.push(UsersService.create(channel, actor, account));
-            });
+            // let asyncArray = [];
+
+            // accounts.forEach((account: ChannelAccount) => {
+            //     asyncArray.push(UsersService.create(channel, actor, account));
+            // });
             
-            let chain = Promise.resolve();
+            // let chain = Promise.resolve();
 
-            for (let func of asyncArray) {
-                chain = chain.then().catch((error: Error) => {
-                    console.log(error);
-                });
-            }
+            // for (let func of asyncArray) {
+            //     chain = chain.then().catch((error: Error) => {
+            //         console.log(error);
+            //     });
+            // }
         });
     }
 

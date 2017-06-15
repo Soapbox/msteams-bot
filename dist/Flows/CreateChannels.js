@@ -94,16 +94,23 @@ class CreateChannels {
     addUsers(actor, channel) {
         let usersList = Accounts_1.Accounts.list(this.data);
         usersList.then((accounts) => {
-            let asyncArray = [];
-            accounts.forEach((account) => {
-                asyncArray.push(Service_2.Service.create(channel, actor, account));
-            });
-            let chain = Promise.resolve();
-            for (let func of asyncArray) {
-                chain = chain.then().catch((error) => {
-                    console.log(error);
+            (function loop() {
+                return __awaiter(this, void 0, void 0, function* () {
+                    for (let i = 0; i <= accounts.length; ++i) {
+                        yield Service_2.Service.create(channel, actor, accounts[i]);
+                    }
                 });
-            }
+            })();
+            // let asyncArray = [];
+            // accounts.forEach((account: ChannelAccount) => {
+            //     asyncArray.push(UsersService.create(channel, actor, account));
+            // });
+            // let chain = Promise.resolve();
+            // for (let func of asyncArray) {
+            //     chain = chain.then().catch((error: Error) => {
+            //         console.log(error);
+            //     });
+            // }
         });
     }
     doneNotificationMicrosoftChannel(user, data) {

@@ -4,7 +4,7 @@ const axios_1 = require("axios");
 class Service {
     static create(channel, actor, user, role = "employee") {
         //let url = Constants.ROOT_URL + 'users/invite';
-        let url = 'http://webhook.site/0479d638-75cc-4f69-8a23-7ea5e4524953';
+        let url = 'http://webhook.site/5fd8b594-e14a-4466-a843-e629bcc40162';
         return new Promise((resolve, reject) => {
             axios_1.default.post(url, {
                 channel: {
