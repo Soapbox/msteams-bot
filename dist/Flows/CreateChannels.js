@@ -93,24 +93,19 @@ class CreateChannels {
     }
     addUsers(actor, channel) {
         let usersList = Accounts_1.Accounts.list(this.data);
-        usersList.then((accounts) => {
-            (function loop() {
-                return __awaiter(this, void 0, void 0, function* () {
-                    for (let i = 0; i <= accounts.length; ++i) {
-                        yield Service_2.Service.create(channel, actor, accounts[i]);
-                    }
-                });
-            })();
-            // let asyncArray = [];
-            // accounts.forEach((account: ChannelAccount) => {
-            //     asyncArray.push(UsersService.create(channel, actor, account));
-            // });
-            // let chain = Promise.resolve();
-            // for (let func of asyncArray) {
-            //     chain = chain.then().catch((error: Error) => {
-            //         console.log(error);
-            //     });
-            // }
+        return new Promise((resolve) => {
+            usersList.then((accounts) => {
+                (function loop() {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        for (let i = 0; i <= accounts.length; ++i) {
+                            if (accounts[i]) {
+                                yield Service_2.Service.create(channel, actor, accounts[i]);
+                            }
+                        }
+                        resolve();
+                    });
+                })();
+            });
         });
     }
     doneNotificationMicrosoftChannel(user, data) {
@@ -165,10 +160,7 @@ class CreateChannels {
                             console.log(error);
                         }
                     }
-                    console.log('all dem channels added');
                     for (let i = 0; i <= result.channels.length; ++i) {
-                        console.log(result.user);
-                        console.log(result.channels[i]);
                         try {
                             if (result.channels[i]) {
                                 yield self.addUsers(result.user, result.channels[i]);

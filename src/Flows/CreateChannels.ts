@@ -100,30 +100,23 @@ export class CreateChannels implements Flow {
         });
     }
 
-    private addUsers(actor: ChannelAccount, channel: ChannelInfo): void {
+    private addUsers(actor: ChannelAccount, channel: ChannelInfo): Promise<void> {
         let usersList = MicrosoftAccounts.list(this.data);
 
-        usersList.then((accounts: ChannelAccount[]) => {
-            (async function loop() {
-                for (let i = 0; i <= accounts.length; ++i) {
-                    await UsersService.create(channel, actor, accounts[i]);
-                }
-            })();
+        return new Promise<void>((resolve) => {
+            usersList.then((accounts: ChannelAccount[]) => {
+                (async function loop() {
+                    for (let i = 0; i <= accounts.length; ++i) {
+                        if (accounts[i]) {
+                            await UsersService.create(channel, actor, accounts[i]);
+                        }
+                    }
 
-            // let asyncArray = [];
-
-            // accounts.forEach((account: ChannelAccount) => {
-            //     asyncArray.push(UsersService.create(channel, actor, account));
-            // });
-            
-            // let chain = Promise.resolve();
-
-            // for (let func of asyncArray) {
-            //     chain = chain.then().catch((error: Error) => {
-            //         console.log(error);
-            //     });
-            // }
-        });
+                    resolve();
+                })();
+            });
+        })
+        
     }
 
     private doneNotificationMicrosoftChannel(user: ChannelAccount, data: IConversationUpdate): void {
@@ -183,10 +176,8 @@ export class CreateChannels implements Flow {
                             console.log(error);
                         }
                     }
-                    console.log('all dem channels added');
+
                     for (let i = 0; i <= result.channels.length; ++i) {
-                        console.log(result.user);
-                        console.log(result.channels[i]);
                         try {
                             if (result.channels[i]) {
                                 await self.addUsers(result.user, result.channels[i]);
@@ -195,6 +186,7 @@ export class CreateChannels implements Flow {
                             console.log(error);
                         }
                     }
+
                     self.doneNotificationMicrosoftChannel(result.user, self.data);
                 })();
             }).catch((error: Error) => {
