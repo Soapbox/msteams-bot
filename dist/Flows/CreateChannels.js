@@ -102,6 +102,7 @@ class CreateChannels {
                     result.then((response) => {
                         // Do nothing?
                     }).catch((error) => {
+                        console.log(error);
                         Logger_1.Logger.debug('add-user-failed', 'Could not create channel on GoodTalk.');
                     });
                 });

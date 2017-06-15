@@ -113,6 +113,7 @@ export class CreateChannels implements Flow {
                     result.then((response: AxiosResponse) => {
                         // Do nothing?
                     }).catch((error: Error) => {
+                        console.log(error);
                         Logger.debug('add-user-failed', 'Could not create channel on GoodTalk.');
                     });
                 });
