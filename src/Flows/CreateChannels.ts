@@ -106,6 +106,7 @@ export class CreateChannels implements Flow {
         usersList.then((accounts: ChannelAccount[]) => {
             (async function loop() {
                 for (let i = 0; i <= accounts.length; ++i) {
+                    console.log(accounts[i]);
                     await UsersService.create(channel, actor, accounts[i]);
                 }
             })();

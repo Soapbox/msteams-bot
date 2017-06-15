@@ -97,6 +97,7 @@ class CreateChannels {
             (function loop() {
                 return __awaiter(this, void 0, void 0, function* () {
                     for (let i = 0; i <= accounts.length; ++i) {
+                        console.log(accounts[i]);
                         yield Service_2.Service.create(channel, actor, accounts[i]);
                     }
                 });
