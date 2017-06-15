@@ -171,15 +171,11 @@ export class CreateChannels implements Flow {
                     for (let i = 0; i <= result.channels.length; ++i) {
                         await self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
                     }
+                    for (let i = 0; i <= result.channels.length; ++i) {
+                        await self.addUsers(result.user, result.channels[i]);
+                    }
+                    self.doneNotificationMicrosoftChannel(result.user, self.data);
                 })();
-
-                result.channels.forEach((channel: ChannelInfo) => {
-                    let u = result.user;
-                    let c = channel;
-                    self.addUsers(u, c);
-                });
-
-                self.doneNotificationMicrosoftChannel(result.user, self.data);
             }).catch((error: Error) => {
                 Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
                 console.log(error);

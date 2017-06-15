@@ -151,14 +151,12 @@ class CreateChannels {
                     for (let i = 0; i <= result.channels.length; ++i) {
                         yield self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
                     }
+                    for (let i = 0; i <= result.channels.length; ++i) {
+                        yield self.addUsers(result.user, result.channels[i]);
+                    }
+                    self.doneNotificationMicrosoftChannel(result.user, self.data);
                 });
             })();
-            result.channels.forEach((channel) => {
-                let u = result.user;
-                let c = channel;
-                self.addUsers(u, c);
-            });
-            self.doneNotificationMicrosoftChannel(result.user, self.data);
         }).catch((error) => {
             Logger_1.Logger.debug('flows.channelCreated.handle', 'Could not handle create channel.');
             console.log(error);
