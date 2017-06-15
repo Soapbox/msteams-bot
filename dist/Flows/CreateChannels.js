@@ -153,7 +153,7 @@ class CreateChannels {
             });
         }).then((result) => __awaiter(this, void 0, void 0, function* () {
             let asyncArray = [];
-            result.channels.array.forEach((channel) => {
+            result.channels.forEach((channel) => {
                 asyncArray.push(self.createGoodTalkChannel(self.tenantId, result.user, result.channel));
                 asyncArray.push(self.addUsers(result.user, channel));
             });

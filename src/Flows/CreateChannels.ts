@@ -173,7 +173,7 @@ export class CreateChannels implements Flow {
             }).then(async (result: any) => {
                 let asyncArray = [];
                 
-                result.channels.array.forEach((channel: ChannelInfo) => {
+                result.channels.forEach((channel: ChannelInfo) => {
                     asyncArray.push(self.createGoodTalkChannel(self.tenantId, result.user, result.channel));
                     asyncArray.push(self.addUsers(result.user, channel));
                 });
