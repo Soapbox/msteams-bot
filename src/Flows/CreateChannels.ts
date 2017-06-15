@@ -100,29 +100,23 @@ export class CreateChannels implements Flow {
         });
     }
 
-    private addUsers(actor: ChannelAccount, channel: ChannelInfo): Promise<ChannelAccount> {
+    private addUsers(actor: ChannelAccount, channel: ChannelInfo): void {
         let usersList = MicrosoftAccounts.list(this.data);
 
-        return new Promise<ChannelAccount>((resolve, reject) => {
-            usersList.then((accounts: ChannelAccount[]) => {
-                console.log(accounts);
-                accounts.forEach((account: ChannelAccount) => {
-                    // Add the user on GoodTalk, and add it to our channel.
-                    let result = UsersService.create(channel, actor, account);
+        usersList.then((accounts: ChannelAccount[]) => {
+            let asyncArray = [];
 
-                    result.then((response: AxiosResponse) => {
-                        console.log('adddddded');
-                        // Do nothing?
-                    }).catch((error: Error) => {
-                        console.log(error);
-                        Logger.debug('add-user-failed', 'Could not create channel on GoodTalk.');
-                    });
-                });
-                resolve(actor);
-            }).catch((error: Error) => {
-                Logger.debug('flows.createChannel.addUsers', 'Could not list microsoft accounts.');
-                reject(error);
+            accounts.forEach((account: ChannelAccount) => {
+                asyncArray.push(UsersService.create(channel, actor, account));
             });
+            
+            let chain = Promise.resolve();
+
+            for (let func of asyncArray) {
+                chain = chain.then().catch((error: Error) => {
+                    console.log(error);
+                });
+            }
         });
     }
 
@@ -174,8 +168,6 @@ export class CreateChannels implements Flow {
                 });
             }).then(async (result: any) => {
                 let asyncArray = [];
-
-                console.log(result);
 
                 console.log('creating channels');
                 

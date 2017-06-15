@@ -93,25 +93,17 @@ class CreateChannels {
     }
     addUsers(actor, channel) {
         let usersList = Accounts_1.Accounts.list(this.data);
-        return new Promise((resolve, reject) => {
-            usersList.then((accounts) => {
-                console.log(accounts);
-                accounts.forEach((account) => {
-                    // Add the user on GoodTalk, and add it to our channel.
-                    let result = Service_2.Service.create(channel, actor, account);
-                    result.then((response) => {
-                        console.log('adddddded');
-                        // Do nothing?
-                    }).catch((error) => {
-                        console.log(error);
-                        Logger_1.Logger.debug('add-user-failed', 'Could not create channel on GoodTalk.');
-                    });
-                });
-                resolve(actor);
-            }).catch((error) => {
-                Logger_1.Logger.debug('flows.createChannel.addUsers', 'Could not list microsoft accounts.');
-                reject(error);
+        usersList.then((accounts) => {
+            let asyncArray = [];
+            accounts.forEach((account) => {
+                asyncArray.push(Service_2.Service.create(channel, actor, account));
             });
+            let chain = Promise.resolve();
+            for (let func of asyncArray) {
+                chain = chain.then().catch((error) => {
+                    console.log(error);
+                });
+            }
         });
     }
     doneNotificationMicrosoftChannel(user, data) {
@@ -155,7 +147,6 @@ class CreateChannels {
             });
         }).then((result) => __awaiter(this, void 0, void 0, function* () {
             let asyncArray = [];
-            console.log(result);
             console.log('creating channels');
             result.channels.forEach((channel) => {
                 let t = self.tenantId;
