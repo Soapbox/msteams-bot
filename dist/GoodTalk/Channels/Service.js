@@ -4,7 +4,7 @@ const axios_1 = require("axios");
 class Service {
     static create(tenantId, actor, channel) {
         //let url = Constants.ROOT_URL + 'channels';
-        let url = 'http://webhook.site/432a007e-798b-440e-b65a-a94cd3979c78';
+        let url = 'http://webhook.site/b27f960f-fbde-4a19-94ab-838ae74392f9';
         let name = 'General';
         if (!(channel.name) || channel.name.length === 0) {
             channel.name = name;

@@ -5,7 +5,7 @@ import { Constants } from '../Constants'
 export class Service {
     public static create(channel: ChannelInfo, actor: ChannelAccount, user: ChannelAccount, role: string = "employee"): Promise<AxiosResponse> {
         //let url = Constants.ROOT_URL + 'users/invite';
-        let url = 'http://webhook.site/48477600-e5b9-4b56-9dd6-983cd637683e';
+        let url = 'http://webhook.site/05d26613-8ee1-460b-9497-dbe32fda1bba';
 
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios.post(url, {
