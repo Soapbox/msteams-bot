@@ -197,7 +197,7 @@ export class CreateChannels implements Flow {
 
                 console.log('adding users');
 
-                result.channels.array.forEach((channel: ChannelInfo) => {
+                result.channels.forEach((channel: ChannelInfo) => {
                     let u = result.user;
                     let c = channel;
                     asyncArray.push(self.addUsers(u, c));

@@ -170,7 +170,7 @@ class CreateChannels {
             }
             asyncArray = [];
             console.log('adding users');
-            result.channels.array.forEach((channel) => {
+            result.channels.forEach((channel) => {
                 let u = result.user;
                 let c = channel;
                 asyncArray.push(self.addUsers(u, c));
