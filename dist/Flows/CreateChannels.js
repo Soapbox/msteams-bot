@@ -159,7 +159,10 @@ class CreateChannels {
                     for (let i = 0; i <= result.channels.length; ++i) {
                         yield self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
                     }
+                    console.log('all dem channels added');
                     for (let i = 0; i <= result.channels.length; ++i) {
+                        console.log(result.user);
+                        console.log(result.channels[i]);
                         yield self.addUsers(result.user, result.channels[i]);
                     }
                     self.doneNotificationMicrosoftChannel(result.user, self.data);
