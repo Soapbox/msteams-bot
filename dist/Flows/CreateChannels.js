@@ -97,7 +97,6 @@ class CreateChannels {
             (function loop() {
                 return __awaiter(this, void 0, void 0, function* () {
                     for (let i = 0; i <= accounts.length; ++i) {
-                        console.log(accounts[i]);
                         yield Service_2.Service.create(channel, actor, accounts[i]);
                     }
                 });
@@ -158,7 +157,9 @@ class CreateChannels {
                 return __awaiter(this, void 0, void 0, function* () {
                     for (let i = 0; i <= result.channels.length; ++i) {
                         try {
-                            yield self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
+                            if (result.channels[i]) {
+                                yield self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
+                            }
                         }
                         catch (error) {
                             console.log(error);
@@ -169,7 +170,9 @@ class CreateChannels {
                         console.log(result.user);
                         console.log(result.channels[i]);
                         try {
-                            yield self.addUsers(result.user, result.channels[i]);
+                            if (result.channels[i]) {
+                                yield self.addUsers(result.user, result.channels[i]);
+                            }
                         }
                         catch (error) {
                             console.log(error);

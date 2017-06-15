@@ -106,7 +106,6 @@ export class CreateChannels implements Flow {
         usersList.then((accounts: ChannelAccount[]) => {
             (async function loop() {
                 for (let i = 0; i <= accounts.length; ++i) {
-                    console.log(accounts[i]);
                     await UsersService.create(channel, actor, accounts[i]);
                 }
             })();
@@ -177,7 +176,9 @@ export class CreateChannels implements Flow {
                 (async function loop() {
                     for (let i = 0; i <= result.channels.length; ++i) {
                         try {
-                            await self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
+                            if (result.channels[i]) {
+                                await self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
+                            }
                         } catch (error) {
                             console.log(error);
                         }
@@ -187,7 +188,9 @@ export class CreateChannels implements Flow {
                         console.log(result.user);
                         console.log(result.channels[i]);
                         try {
-                            await self.addUsers(result.user, result.channels[i]);
+                            if (result.channels[i]) {
+                                await self.addUsers(result.user, result.channels[i]);
+                            }
                         } catch (error) {
                             console.log(error);
                         }
