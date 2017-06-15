@@ -111,6 +111,7 @@ export class CreateChannels implements Flow {
                     let result = UsersService.create(channel, actor, account);
 
                     result.then((response: AxiosResponse) => {
+                        console.log('adddddded');
                         // Do nothing?
                     }).catch((error: Error) => {
                         console.log(error);

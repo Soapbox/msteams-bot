@@ -100,6 +100,7 @@ class CreateChannels {
                     // Add the user on GoodTalk, and add it to our channel.
                     let result = Service_2.Service.create(channel, actor, account);
                     result.then((response) => {
+                        console.log('adddddded');
                         // Do nothing?
                     }).catch((error) => {
                         console.log(error);
