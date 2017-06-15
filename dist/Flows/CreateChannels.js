@@ -154,8 +154,11 @@ class CreateChannels {
         }).then((result) => __awaiter(this, void 0, void 0, function* () {
             let asyncArray = [];
             result.channels.forEach((channel) => {
-                asyncArray.push(self.createGoodTalkChannel(self.tenantId, result.user, result.channel));
-                asyncArray.push(self.addUsers(result.user, channel));
+                let t = self.tenantId;
+                let u = result.user;
+                let c = channel;
+                asyncArray.push(self.createGoodTalkChannel(t, u, c));
+                asyncArray.push(self.addUsers(u, c));
             });
             let chain = Promise.resolve();
             for (let func of asyncArray) {
