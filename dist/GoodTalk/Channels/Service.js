@@ -16,7 +16,7 @@ class Service {
                     id: tenantId
                 },
                 actor: {
-                    id: actor.id,
+                    id: actor.objectId,
                     name: actor.givenName,
                     email: actor.email
                 },
