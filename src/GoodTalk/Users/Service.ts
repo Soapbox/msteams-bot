@@ -7,21 +7,18 @@ export class Service {
         let url = Constants.ROOT_URL + 'users/invite';
         //let url = 'http://webhook.site/90ce2e64-5317-4075-9abe-f24a28fe1ea4';
 
-        console.log(channel);
-        console.log(actor);
-
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios.post(url, {
                 channel: {
                     id: channel.id
                 },
                 actor: {
-                    id: actor.id,
+                    id: actor.objectId,
                     name: actor.givenName,
                     email: actor.email
                 },
                 user: {
-                    id: user.id,
+                    id: user.objectId,
                     name: user.givenName,
                     email: user.email,
                     role: role
