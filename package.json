@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "botbuilder": "^3.8.4",
+    "botbuilder": "^3.11.0",
     "botbuilder-teams": "^0.1.2",
-    "restify": "^4.3.0",
+    "restify": "^6.0.1",
     "sprintf-js": "^1.1.1"
   },
   "devDependencies": {
@@ -27,7 +27,7 @@
     "typescript": "^2.3.4"
   },
   "scripts": {
-    "start": "node ./dist/index.js",
+    "start": "MICROSOFT_APP_ID=8b3a85a3-7e27-4c46-be21-2f2a5a5d3a62 MICROSOFT_APP_PASSWORD=8g2ZkgwdRmA0Ec3ZWdc5p3d node ./dist/index.js",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
     "build": "./node_modules/.bin/tsc",
     "test": "jest",
