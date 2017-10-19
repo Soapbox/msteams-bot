@@ -13,7 +13,7 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 // Create chat connector for communicating with the Bot Framework Service
 var botConnector = new ChatConnector({
     appId: 'b49e7913-3b3f-4125-adde-2b698fc12c8b',
-    appPassword: 'XisGKQCPEqZ4ssP9KjyzDm5'
+    appPassword: 'jv9E8LCYLi9yEMfvqkVEEsH'
 });
 
 // Listen for messages from users
@@ -23,7 +23,7 @@ Bot.initialize(botConnector, {});
 
 var chatConnector = new TeamsChatConnector({
     appId: 'b49e7913-3b3f-4125-adde-2b698fc12c8b',
-    appPassword: 'XisGKQCPEqZ4ssP9KjyzDm5'
+    appPassword: 'jv9E8LCYLi9yEMfvqkVEEsH'
 });
 
 Team.initialize(chatConnector);
