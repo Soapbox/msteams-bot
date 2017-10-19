@@ -19,8 +19,8 @@ export class Bot extends UniversalBot {
     {
         super(connector, settings);
 
-        DialogInitializer.initialize(this);
-        ActionInitializer.initialize(this);
+        // DialogInitializer.initialize(this);
+        // ActionInitializer.initialize(this);
 
         this.use(new Logger());
         this.use(new StripBotAtMentions());
