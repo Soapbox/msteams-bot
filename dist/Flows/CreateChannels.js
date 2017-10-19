@@ -63,8 +63,8 @@ class CreateChannels {
         };
         let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
         session.then((session) => {
-            session.send(sprintf_js_1.sprintf("Blurb about running better meetings with GoodTalk"));
-            session.send(sprintf_js_1.sprintf("Blurb about setting up things in background and to wait"));
+            session.send(sprintf_js_1.sprintf("Hi!! I'm GoodTalk, a bot to help you build 💪 stronger relationships on your team by having better team meetings 😎"));
+            session.send(sprintf_js_1.sprintf("I'm setting your team up now and I'll let you know when everything is ready!!"));
         }).catch((error) => {
             Logger_1.Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
         });
@@ -128,7 +128,7 @@ class CreateChannels {
         };
         let session = Sessions_1.Sessions.load(Bot_1.Bot.getInstance(), address);
         session.then((session) => {
-            session.send(sprintf_js_1.sprintf("Instructions on how to add tab app to team channel."));
+            session.send(sprintf_js_1.sprintf("Your team is setup! Add the GoodTalk tab to your channel to get started!!"));
         }).catch((error) => {
             Logger_1.Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
         });

@@ -11,14 +11,14 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 });
 // Create chat connector for communicating with the Bot Framework Service
 var botConnector = new botbuilder_1.ChatConnector({
-    appId: process.env.MICROSOFT_APP_ID,
-    appPassword: process.env.MICROSOFT_APP_PASSWORD
+    appId: 'b49e7913-3b3f-4125-adde-2b698fc12c8b',
+    appPassword: 'XisGKQCPEqZ4ssP9KjyzDm5'
 });
-// Listen for messages from users 
+// Listen for messages from users
 server.post('/api/messages', botConnector.listen());
 Bot_1.Bot.initialize(botConnector, {});
 var chatConnector = new botbuilder_teams_1.TeamsChatConnector({
-    appId: process.env.MICROSOFT_APP_ID,
-    appPassword: process.env.MICROSOFT_APP_PASSWORD
+    appId: 'b49e7913-3b3f-4125-adde-2b698fc12c8b',
+    appPassword: 'XisGKQCPEqZ4ssP9KjyzDm5'
 });
 Team_1.Team.initialize(chatConnector);

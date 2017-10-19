@@ -42,7 +42,7 @@ export class CreateChannels implements Flow {
     }
 
     private greetUser(user: ChannelAccount, data: IConversationUpdate): void {
-        let address = { 
+        let address = {
             channelId: data.address.channelId,
             user: {
                 id: user.id
@@ -52,9 +52,9 @@ export class CreateChannels implements Flow {
                     id: data.sourceEvent.tenant.id
                 }
             },
-            bot: { 
+            bot: {
                 id: data.address.bot.id,
-                name: data.address.bot.name 
+                name: data.address.bot.name
             },
             serviceUrl: (<IChatConnectorAddress>data.address).serviceUrl,
             useAuth: true
@@ -64,10 +64,10 @@ export class CreateChannels implements Flow {
 
         session.then((session: Session) => {
             session.send(sprintf(
-                "Blurb about running better meetings with GoodTalk"
+                "Hi!! I'm GoodTalk, a bot to help you build 💪 stronger relationships on your team by having better team meetings 😎"
             ));
             session.send(sprintf(
-                "Blurb about setting up things in background and to wait"
+                "I'm setting your team up now and I'll let you know when everything is ready!!"
             ));
         }).catch((error: Error) => {
             Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');
@@ -116,11 +116,11 @@ export class CreateChannels implements Flow {
                 })();
             });
         })
-        
+
     }
 
     private doneNotificationMicrosoftChannel(user: ChannelAccount, data: IConversationUpdate): void {
-        let address = { 
+        let address = {
             channelId: data.address.channelId,
             user: {
                 id: user.id
@@ -130,9 +130,9 @@ export class CreateChannels implements Flow {
                     id: data.sourceEvent.tenant.id
                 }
             },
-            bot: { 
+            bot: {
                 id: data.address.bot.id,
-                name: data.address.bot.name 
+                name: data.address.bot.name
             },
             serviceUrl: (<IChatConnectorAddress>data.address).serviceUrl,
             useAuth: true
@@ -142,7 +142,7 @@ export class CreateChannels implements Flow {
 
         session.then((session: Session) => {
             session.send(sprintf(
-                "Instructions on how to add tab app to team channel."
+                "Your team is setup! Add the GoodTalk tab to your channel to get started!!"
             ));
         }).catch((error: Error) => {
             Logger.debug('flows.createChannel.greetUser', 'Could not create a new session.');

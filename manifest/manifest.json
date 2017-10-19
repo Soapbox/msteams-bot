@@ -32,20 +32,6 @@
             "scopes": [
                 "team",
                 "personal"
-            ],
-            "commandLists": [
-                {
-                    "scopes": [
-                        "team",
-                        "personal"
-                    ],
-                    "commands": [
-                        {
-                            "title": "help",
-                            "description": "Find out what I can do"
-                        }
-                    ]
-                }
             ]
         }
     ],
