@@ -11,8 +11,8 @@ export class Team extends TeamsChatConnector {
         return Team.instance;
     }
 
-    private constructor(connector: TeamsChatConnector)
-    {
-        super(connector);
-    }
+    // private constructor(connector: TeamsChatConnector)
+    // {
+    //     super(connector);
+    // }
 }

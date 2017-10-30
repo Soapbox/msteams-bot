@@ -152,6 +152,7 @@ export class CreateChannels implements Flow {
     handle(): void {
         let self: CreateChannels = this;
 
+
         self.getMicrosoftUser(self.userId, self.data)
             .then((user: ChannelAccount) => {
                 Logger.log('flows.createChannel.handle', 'Found the Microsoft user.');
@@ -167,7 +168,7 @@ export class CreateChannels implements Flow {
                 });
             }).then((result: any) => {
                 (async function loop() {
-                    for (let i = 0; i <= result.channels.length; ++i) {
+                    for (let i = 0; i < 1; ++i) {
                         try {
                             if (result.channels[i]) {
                                 await self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
@@ -177,7 +178,7 @@ export class CreateChannels implements Flow {
                         }
                     }
 
-                    for (let i = 0; i <= result.channels.length; ++i) {
+                    for (let i = 0; i < 1; ++i) {
                         try {
                             if (result.channels[i]) {
                                 await self.addUsers(result.user, result.channels[i]);

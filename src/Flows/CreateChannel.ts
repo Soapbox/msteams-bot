@@ -7,61 +7,12 @@ import { ChannelAccount, ChannelInfo } from 'botbuilder-teams'
 import { Sessions } from '../Utilities/Sessions'
 import { Logger } from '../Utilities/Logger'
 import { AxiosResponse } from 'axios'
-import { Flow } from './Flow'
 import { Bot } from '../Bot'
 
-export class CreateChannel implements Flow {
-    userId: string = '';
-    channelId: string = '';
-    tenantId: string = '';
-    channel: ChannelInfo;
-    user: ChannelAccount;
+export class CreateChannel {
+    constructor() {}
 
-    constructor(protected data: IConversationUpdate) {
-        this.channelId = data.address.conversation.id;
-        this.userId = data.user.id;
-        this.tenantId = data.sourceEvent.tenant.id;
-
-        this.channel = new ChannelInfo(data.sourceEvent.channel.name, data.sourceEvent.channel.id);
-    }
-
-    handle(): void {
-        let self: CreateChannel = this;
-
-        self.getMicrosoftUser(self.userId, self.data)
-            .then((u: ChannelAccount) => {
-                self.user = u;
-
-                return self.createGoodTalkChannel(self.tenantId, self.user, self.channel);
-            })
-            .then((channel: any) => {
-                return self.addUsers(self.user, self.channel);
-            })
-            .then(function() {
-                console.log('i dunno lol probably finished');
-            });
-    }
-
-    private getMicrosoftUser(userId: string, data: IConversationUpdate): Promise<ChannelAccount> {
-        let usersList = MicrosoftAccounts.list(data);
-
-        return new Promise<ChannelAccount>((resolve, reject) => {
-            usersList.then((accounts: ChannelAccount[]) => {
-                accounts.forEach((account: ChannelAccount) => {
-                    if (account.id == userId) {
-                        resolve(account);
-                        return;
-                    }
-                });
-                reject(new Error('Could not find requested microsoft user.'));
-            }).catch((error: Error) => {
-                Logger.debug('flows.createChannel.getMicrosoftUser', 'Could not list microsoft users.');
-                reject(error);
-            });
-        });
-    }
-
-    private createGoodTalkChannel(tenantId: string, actor: ChannelAccount, channel: ChannelInfo): Promise<ChannelInfo> {
+    createGoodTalkChannel(tenantId: string, actor: ChannelAccount, channel: ChannelInfo): Promise<ChannelInfo> {
         let result = ChannelsService.create(tenantId, actor, channel);
 
         return new Promise<ChannelInfo>((resolve, reject) => {
@@ -74,27 +25,20 @@ export class CreateChannel implements Flow {
         });
     }
 
-    private addUsers(actor: ChannelAccount, channel: ChannelInfo): Promise<void> {
-        console.log('adding users');
-
-        let usersList = MicrosoftAccounts.list(this.data);
-
+    addUsers(actor: ChannelAccount, channel: ChannelInfo, accounts: ChannelAccount[]): Promise<void> {
         return new Promise<void>((resolve) => {
-            usersList.then((accounts: ChannelAccount[]) => {
-                console.log(accounts);
+            (async function loop() {
+                for (let i = 0; i <= accounts.length; ++i) {
 
-                (async function loop() {
-                    for (let i = 0; i <= accounts.length; ++i) {
-                        if (accounts[i]) {
-                            console.log(accounts[i]);
+                    if (accounts[i]) {
+                        // console.log(accounts[i]);
 
-                            await UsersService.create(channel, actor, accounts[i]);
-                        }
+                        await UsersService.create(channel, actor, accounts[i]);
                     }
+                }
 
-                    resolve();
-                })();
-            });
+                resolve();
+            })();
         })
     }
 }

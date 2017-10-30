@@ -1,17 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const botbuilder_teams_1 = require("botbuilder-teams");
-const botbuilder_1 = require("botbuilder");
+const connector = require("botbuilder-teams");
+// import { ChatConnector, Message } from 'botbuilder';
+const builder = require("botbuilder");
 var restify = require('restify');
 const Team_1 = require("./Team");
 const Bot_1 = require("./Bot");
+const CreateChannel_1 = require("./Flows/CreateChannel");
 var server = restify.createServer();
 server.use(restify.plugins.bodyParser());
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 // Create chat connector for communicating with the Bot Framework Service
-var botConnector = new botbuilder_1.ChatConnector({
+var botConnector = new builder.ChatConnector({
     appId: 'b49e7913-3b3f-4125-adde-2b698fc12c8b',
     appPassword: 'jv9E8LCYLi9yEMfvqkVEEsH'
 });
@@ -24,7 +26,7 @@ Bot_1.Bot.initialize(botConnector, function (session) {
     console.log(address);
 });
 // Bot.initialize(botConnector, {});
-var chatConnector = new botbuilder_teams_1.TeamsChatConnector({
+var chatConnector = new connector.TeamsChatConnector({
     appId: 'b49e7913-3b3f-4125-adde-2b698fc12c8b',
     appPassword: 'jv9E8LCYLi9yEMfvqkVEEsH'
 });
@@ -32,25 +34,101 @@ Team_1.Team.initialize(chatConnector);
 Bot_1.Bot.getInstance().on('conversationUpdate', function (data) {
     channelAddress = data.address;
 });
-server.post('api/notify', function (req, res, next) {
-    console.log('notifying!');
-    // const message = buildMessage(req.body.channel ? channelAddress : address, req.body.message);
-    const message = buildMessage(req.body.channel ? channelAddress : address, req.body.message);
-    Bot_1.Bot.getInstance().send(message);
-    res.send(200);
-    next();
-});
-function buildMessage(address, text) {
-    return (new botbuilder_1.Message())
-        .address(address)
-        .text(text)
-        .setChannelData({
-        notification: {
-            alert: true
+// server.post('api/notify', function (req, res, next) {
+//   console.log('notifying!');
+//   // const message = buildMessage(req.body.channel ? channelAddress : address, req.body.message);
+//   const message = buildMessage(req.body.channel ? channelAddress : address, req.body.message);
+//   Bot.getInstance().send(message);
+//   res.send(200);
+//   next();
+// });
+server.post('channel/hack', function (req, res, next) {
+    console.log(req.body);
+    var response = req.body;
+    var reqChannel = response.channel_id;
+    var reqUser = response.user_id;
+    var tenantId = response.tenant_id;
+    var serviceUrl = 'https://smba.trafficmanager.net/amer-client-ss.msg/';
+    var teamId = '19:850c6cbff44041deba46c87b2203f04d@thread.skype';
+    var realChannel;
+    var realMember;
+    var memberList;
+    return fetchChannels(serviceUrl, teamId)
+        .then(function (channels) {
+        // console.log(channels);
+        for (var i in channels) {
+            var channel = channels[i];
+            if (channel.id == reqChannel) {
+                realChannel = channel;
+                break;
+            }
         }
+        return fetchMembers(serviceUrl, teamId);
     })
-        .textLocale('en-US');
+        .then(function (members) {
+        memberList = members;
+        // console.log(members);
+        for (var i in members) {
+            var member = members[i];
+            if (member.objectId == reqUser) {
+                realMember = member;
+                break;
+            }
+        }
+        return Promise.resolve();
+    })
+        .then(function () {
+        console.log('finished??');
+        // console.log(realChannel);
+        // console.log(realMember);           
+        var channelInfo = new connector.ChannelInfo(realChannel.name, realChannel.id);
+        var cc = new CreateChannel_1.CreateChannel();
+        cc.createGoodTalkChannel(tenantId, realMember, channelInfo)
+            .then(function () {
+            return cc.addUsers(realMember, channelInfo, memberList);
+        })
+            .then(function () {
+            console.log('FINISHED!');
+            res.send(200);
+            next();
+        });
+    });
+});
+function fetchChannels(serviceUrl, teamId) {
+    return new Promise(function (resolve, reject) {
+        chatConnector.fetchChannelList(serviceUrl, teamId, (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(result);
+            }
+        });
+    });
 }
+function fetchMembers(serviceUrl, teamId) {
+    return new Promise(function (resolve, reject) {
+        chatConnector.fetchMembers(serviceUrl, teamId, (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(result);
+            }
+        });
+    });
+}
+// function buildMessage(address, text) {
+//   return (new Message())
+//     .address(address)
+//     .text(text)
+//     .setChannelData({
+//       notification: {
+//         alert: true
+//       }
+//     })
+//     .textLocale('en-US');
+// }
 function getAddressForUser(userId, channelId) {
     return {
         channelId: channelId,

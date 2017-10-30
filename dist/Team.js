@@ -8,8 +8,5 @@ class Team extends botbuilder_teams_1.TeamsChatConnector {
     static getInstance() {
         return Team.instance;
     }
-    constructor(connector) {
-        super(connector);
-    }
 }
 exports.Team = Team;

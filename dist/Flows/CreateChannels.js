@@ -150,7 +150,7 @@ class CreateChannels {
         }).then((result) => {
             (function loop() {
                 return __awaiter(this, void 0, void 0, function* () {
-                    for (let i = 0; i <= result.channels.length; ++i) {
+                    for (let i = 0; i < 1; ++i) {
                         try {
                             if (result.channels[i]) {
                                 yield self.createGoodTalkChannel(self.tenantId, result.user, result.channels[i]);
@@ -160,7 +160,7 @@ class CreateChannels {
                             console.log(error);
                         }
                     }
-                    for (let i = 0; i <= result.channels.length; ++i) {
+                    for (let i = 0; i < 1; ++i) {
                         try {
                             if (result.channels[i]) {
                                 yield self.addUsers(result.user, result.channels[i]);

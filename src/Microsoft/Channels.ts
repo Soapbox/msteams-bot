@@ -10,7 +10,7 @@ export class Channels {
         let address = data.address;
         let session = Sessions.load(Bot.getInstance(), address);
 
-        return new Promise<ChannelInfo>((resolve, reject) => {
+        return new Promise<ChannelInfo[]>((resolve, reject) => {
             session.then((session: Session) => {
                 let connector: TeamsChatConnector = Team.getInstance();
                 let address: IChatConnectorAddress = session.message.address;

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const CreateChannels_1 = require("../Flows/CreateChannels");
-const CreateChannel_1 = require("../Flows/CreateChannel");
 const Logger_1 = require("../Utilities/Logger");
 const Action_1 = require("./Action");
 class ConversationUpdate extends Action_1.Action {
@@ -21,8 +20,8 @@ class ConversationUpdate extends Action_1.Action {
         else if (data.sourceEvent.eventType == 'channelCreated') {
             Logger_1.Logger.log('actions.conversationUpdate.listener', 'New channel detected.');
             // console.log('lololol');
-            var createChannel = new CreateChannel_1.CreateChannel(data);
-            createChannel.handle();
+            // var createChannel = new CreateChannel(<IConversationUpdate> data);
+            // createChannel.handle();
         }
         else {
             Logger_1.Logger.log('actions.conversationUpdate.listener', 'Detected a conversation update, not sure what to do.');

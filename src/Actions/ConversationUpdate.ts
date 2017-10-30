@@ -27,8 +27,8 @@ export class ConversationUpdate extends Action {
 
             // console.log('lololol');
 
-            var createChannel = new CreateChannel(<IConversationUpdate> data);
-            createChannel.handle();
+            // var createChannel = new CreateChannel(<IConversationUpdate> data);
+            // createChannel.handle();
         } else {
             Logger.log('actions.conversationUpdate.listener', 'Detected a conversation update, not sure what to do.');
             console.log(data);
